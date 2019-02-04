@@ -36,11 +36,15 @@ namespace PhotoMapApp
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
             containerRegistry.RegisterForNavigation<PostPage, PostPageViewModel>();
             containerRegistry.RegisterForNavigation<AddPostPage, AddPostPageViewModel>();
+            containerRegistry.RegisterForNavigation<MenuNavigation, MenuNavigationViewModel>();
+            containerRegistry.RegisterForNavigation<ListPostPage, ListPostPageViewModel>();
+
+            // Services
 
             containerRegistry.RegisterSingleton<IPostService, PostService>();
             containerRegistry.RegisterSingleton<ITagService, TagService>();
-            containerRegistry.RegisterForNavigation<MenuNavigation, MenuNavigationViewModel>();
-            containerRegistry.RegisterForNavigation<ListPostPage, ListPostPageViewModel>();
+            containerRegistry.RegisterSingleton<IImageService, ImageService>();
+
         }
     }
 }

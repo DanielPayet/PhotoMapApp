@@ -5,12 +5,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.2.0.839982" />
+    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1029999" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.1.0.431" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Ressources\profil.png" />
+    <None Remove="Resources\profil.png" />
+    <None Remove="Resources\Icons\delete.png" />
+    <None Remove="Resources\Icons\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Resources\Icons\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\profil.png" />
+    <EmbeddedResource Include="Resources\Icons\delete.png" />
+    <EmbeddedResource Include="Resources\Icons\edit.png" />
   </ItemGroup>
 
   <ItemGroup>

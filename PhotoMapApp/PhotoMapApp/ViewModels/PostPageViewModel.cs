@@ -7,6 +7,8 @@ using Prism.Navigation;
 using Prism.Logging;
 using Prism.Services;
 using PhotoMapApp.Models;
+using Xamarin.Forms;
+using PhotoMapApp.Services.Definitions;
 
 namespace PhotoMapApp.ViewModels
 {
@@ -16,19 +18,29 @@ namespace PhotoMapApp.ViewModels
         public Post Post { get { return this._post; } set { SetProperty(ref this._post, value); }}
         public DelegateCommand DeletePostDelegate { get; private set; }
         public DelegateCommand EditPostDelegate { get; private set; }
+        private IImageService _imageService;
+
+        public ImageSource BannerImageSource { get; private set; }
+        public ImageSource EditButtonImageSource { get; private set; }
+        public ImageSource DeleteButtonImageSource { get; private set; }
 
         private IPageDialogService _dialogService;
-        public PostPageViewModel(INavigationService navigationService, IPageDialogService dialogService) : base(navigationService)
+        public PostPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IImageService imageService) : base(navigationService)
         {
+            this._imageService = imageService;
             this._dialogService = dialogService;
             this.DeletePostDelegate = new DelegateCommand(DeletePostCommand);
             this.EditPostDelegate = new DelegateCommand(EditPostCommand);
+
+            // Resources
+            this.BannerImageSource = this._imageService.GetSource("profil.png");
+            this.EditButtonImageSource = this._imageService.GetSource("Icons.edit.png");
+            this.DeleteButtonImageSource = this._imageService.GetSource("Icons.delete.png");
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             this.Post = (Post)parameters["post"];
-            // this.Post = new Post("Post de test", "Ceci est une description", new Tag("THOMINOU"), "null", 1.2948848, 43.39494, "Rue du gros prout de Daniel", new DateTime());
             this.Title = Post.Name;
         }
 
