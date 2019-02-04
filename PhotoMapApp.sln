@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoMapApp", "PhotoMapApp\PhotoMapApp\PhotoMapApp.csproj", "{A97C7367-01E6-40DE-8588-02F02D0F3403}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoMapApp.Android", "PhotoMapApp\PhotoMapApp.Android\PhotoMapApp.Android.csproj", "{A8ABBF63-6CCE-4376-8157-94047FFA77FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A97C7367-01E6-40DE-8588-02F02D0F3403}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A97C7367-01E6-40DE-8588-02F02D0F3403}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A97C7367-01E6-40DE-8588-02F02D0F3403}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A97C7367-01E6-40DE-8588-02F02D0F3403}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8ABBF63-6CCE-4376-8157-94047FFA77FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8ABBF63-6CCE-4376-8157-94047FFA77FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8ABBF63-6CCE-4376-8157-94047FFA77FC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A8ABBF63-6CCE-4376-8157-94047FFA77FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8ABBF63-6CCE-4376-8157-94047FFA77FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8ABBF63-6CCE-4376-8157-94047FFA77FC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9C3C9734-FC0D-4E82-AAC2-600EFD86D088}
+	EndGlobalSection
+EndGlobal
