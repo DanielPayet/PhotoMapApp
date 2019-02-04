@@ -4,6 +4,8 @@ using PhotoMapApp.ViewModels;
 using PhotoMapApp.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PhotoMapApp.Services.Definitions;
+using PhotoMapApp.Services.Implementations;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PhotoMapApp
@@ -28,8 +30,15 @@ namespace PhotoMapApp
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            // Navigation
+
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+
+            // Services
+
+            containerRegistry.RegisterSingleton<IPostService, PostService>();
+            containerRegistry.RegisterSingleton<ITagService, TagService>();
         }
     }
 }
