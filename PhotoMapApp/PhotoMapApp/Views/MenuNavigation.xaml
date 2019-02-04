@@ -19,10 +19,9 @@
                 </Label>
                 <BoxView  
                     VerticalOptions="Center"
-                    HorizontalOptions="StartAndExpand"
-                    HeightRequest="1"
-                    WidthRequest="100"  
-                    Color="Blue">
+                    HorizontalOptions="FillAndExpand"
+                    HeightRequest="1" 
+                    Color="Black">
                 </BoxView>
                 <Label
                     Text="Map"
@@ -39,7 +38,7 @@
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer
                            Command="{Binding NaviagtionCommand}"
-                           CommandParameter="PostPage" />
+                           CommandParameter="ListPostPage" />
                     </Label.GestureRecognizers>
                 </Label>
                 <Label

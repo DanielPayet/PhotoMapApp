@@ -40,6 +40,7 @@ namespace PhotoMapApp
             containerRegistry.RegisterSingleton<IPostService, PostService>();
             containerRegistry.RegisterSingleton<ITagService, TagService>();
             containerRegistry.RegisterForNavigation<MenuNavigation, MenuNavigationViewModel>();
+            containerRegistry.RegisterForNavigation<ListPostPage, ListPostPageViewModel>();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace PhotoMapApp.Models
 
         public Tag(string name)
         {
-            this.Name = name;
+            this.Name = '#' + name;
         }
     }
 }

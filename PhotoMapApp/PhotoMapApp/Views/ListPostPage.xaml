@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="PhotoMapApp.Views.ListPostPage">
+
+    <ListView
+            x:Name="ListPizza"
+            ItemsSource="{Binding Posts}"
+            HasUnevenRows="True"
+            SelectionMode="Single">
+
+        <ListView.Behaviors>
+            <b:EventToCommandBehavior EventName="ItemTapped" 
+                                      Command="{Binding OpenPostCommand}"
+                                      EventArgsParameterPath="Item" />
+        </ListView.Behaviors>
+
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <StackLayout
+                            BackgroundColor="Beige"
+                            Orientation="Horizontal"
+                            VerticalOptions="FillAndExpand"
+                            Padding="15">
+
+                        <StackLayout>
+                            <Label
+                                Text="{Binding Name}"/>
+                            <Label
+                                Text="{Binding Tag.Name}"/>
+                        </StackLayout>
+                     
+                        <Label
+                                Text="TIME"
+                                VerticalOptions="Start"
+                                HorizontalOptions="EndAndExpand"
+                                HorizontalTextAlignment="End"/>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>

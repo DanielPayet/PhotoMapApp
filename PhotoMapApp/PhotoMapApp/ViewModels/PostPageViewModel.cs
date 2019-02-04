@@ -28,9 +28,7 @@ namespace PhotoMapApp.ViewModels
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             this.Post = (Post)parameters["post"];
-
-            this.Post = new Post("Post de test", "Ceci est une description", new List<Tag>(), "null", 1.2948848, 43.39494, "Rue du gros prout de Daniel", new DateTime())
-;
+            // this.Post = new Post("Post de test", "Ceci est une description", new Tag("THOMINOU"), "null", 1.2948848, 43.39494, "Rue du gros prout de Daniel", new DateTime());
             this.Title = Post.Name;
         }
 

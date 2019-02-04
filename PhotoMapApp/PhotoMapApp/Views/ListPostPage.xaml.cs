@@ -2,9 +2,9 @@
 
 namespace PhotoMapApp.Views
 {
-    public partial class MainPage: ContentPage
+    public partial class ListPostPage : ContentPage
     {
-        public MainPage()
+        public ListPostPage()
         {
             InitializeComponent();
         }

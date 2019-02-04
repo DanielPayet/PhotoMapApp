@@ -8,7 +8,7 @@
         
         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
            <Label Text="{Binding Post.Name}" Style="" HorizontalOptions="StartAndExpand" />
-           <Label Text="[#tag]" Style="" HorizontalOptions="End" />
+           <Label Text="{Binding Post.Tag.Name}" Style="" HorizontalOptions="End" />
         </StackLayout>
         
         <Label Text="{Binding Post.Description}"></Label>

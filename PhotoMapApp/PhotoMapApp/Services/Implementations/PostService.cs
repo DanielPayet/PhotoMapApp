@@ -12,7 +12,9 @@ namespace PhotoMapApp.Services.Implementations
 
         public PostService()
         {
-            this._posts = new List<Post>();
+            this._posts = new List<Post> {
+                new Post("Post de test", "Ceci est une description", new Tag("THOMINOU"), "null", 1.2948848, 43.39494, "Rue du gros prout de Daniel", new DateTime())
+            };
         }
 
         public List<Post> GetPosts()
@@ -25,9 +27,9 @@ namespace PhotoMapApp.Services.Implementations
             return this._posts[id];
         }
 
-        public void CreatePost(string name, string description, List<Tag> tags, string image, Double latitude, Double longitude, String address, DateTime dateTime)
+        public void CreatePost(string name, string description, Tag tag, string image, Double latitude, Double longitude, String address, DateTime dateTime)
         {
-            this._posts.Add(new Post(name, description, tags, image, latitude, longitude, address, dateTime));
+            this._posts.Add(new Post(name, description, tag, image, latitude, longitude, address, dateTime));
         }
     }
 }

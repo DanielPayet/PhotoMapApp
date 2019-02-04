@@ -9,19 +9,19 @@ namespace PhotoMapApp.Models
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<Tag> Tags { get; set; }
+        public Tag Tag { get; set; }
         public string Image { get; set; }
         public Double Latitude { get; set; }
         public Double Longitude { get; set; }
         public String Address { get; set; }
         public DateTime DateTime { get; set; }
 
-        public Post(string name, string description, List<Tag> tags, string image, Double latitude, Double longitude, String address, DateTime dateTime)
+        public Post(string name, string description,Tag tag, string image, Double latitude, Double longitude, String address, DateTime dateTime)
         {
             this.Name = name;
             this.Description = description;
             this.Name = name;
-            this.Tags = new List<Tag>(tags);
+            this.Tag = tag;
             this.Image = image;
             this.Latitude = latitude;
             this.Longitude = longitude;
