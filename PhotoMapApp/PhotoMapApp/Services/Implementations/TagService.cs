@@ -12,7 +12,11 @@ namespace PhotoMapApp.Services.Implementations
 
         public TagService()
         {
-            this._tags = new List<Tag>();
+            this._tags = new List<Tag> {
+                new Tag("Drink"),
+                new Tag("Food"),
+                new Tag("ToSee")
+            };
         }
 
         public List<Tag> getTags()
