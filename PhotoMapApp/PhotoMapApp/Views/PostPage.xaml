@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="{Binding Title}"
+             x:Class="PhotoMapApp.Views.PostPage">
+    <StackLayout>
+        <Image Source=""></Image>
+        
+        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+           <Label Text="{Binding test}" Style="" HorizontalOptions="StartAndExpand" />
+           <Label Text="[#tag]" Style="" HorizontalOptions="End" />
+        </StackLayout>
+        
+        <Label Text="[DESCRIPTION]">
+            
+        </Label>
+        
+        <Label Text="[Latitude - Longitude]" Style="" />
+        <Label Text="[Adresse]" Style="" />
+        
+        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+           <Button Text="[Edit]" Command="{Binding EditPostDelegate}" HorizontalOptions="End" />
+           <Button Text="[Remove]" Command="{Binding DeletePostDelegate}" HorizontalOptions="End" />
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

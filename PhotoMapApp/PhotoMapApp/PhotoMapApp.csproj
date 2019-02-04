@@ -9,4 +9,7 @@
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.1.0.431" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Ressources\profil.png" />
+  </ItemGroup>
 </Project>

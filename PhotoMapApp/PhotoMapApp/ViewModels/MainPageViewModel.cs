@@ -10,10 +10,17 @@ namespace PhotoMapApp.ViewModels
 {
     public class MainPageViewModel: ViewModelBase
     {
-        public MainPageViewModel(INavigationService navigationService)
-            : base(navigationService)
-        {
+
+        public DelegateCommand NavigateToPostPageDelegate { get; private set; }
+
+        public MainPageViewModel(INavigationService navigationService) : base(navigationService) {
             Title = "Main Page";
+            this.NavigateToPostPageDelegate = new DelegateCommand(NavigateToPostPageAction);
+        }
+
+        private void NavigateToPostPageAction()
+        {
+            NavigationService.NavigateAsync("PostPage");
         }
     }
 }

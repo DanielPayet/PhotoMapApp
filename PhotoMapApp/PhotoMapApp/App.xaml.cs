@@ -30,6 +30,8 @@ namespace PhotoMapApp
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<PostPage, PostPageViewModel>();
+            containerRegistry.RegisterForNavigation<AddPostPage, AddPostPageViewModel>();
         }
     }
 }
