@@ -19,12 +19,12 @@ namespace PhotoMapApp.Services.Implementations
             };
         }
 
-        public List<Tag> getTags()
+        public List<Tag> GetTags()
         {
             return this._tags;
         }
 
-        public Tag getTag(int id)
+        public Tag GetTag(int id)
         {
             return this._tags[id];
         }

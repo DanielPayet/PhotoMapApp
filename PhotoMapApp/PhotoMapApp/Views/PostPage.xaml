@@ -7,18 +7,20 @@
         <Image Source=""></Image>
         
         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-           <Label Text="{Binding test}" Style="" HorizontalOptions="StartAndExpand" />
+           <Label Text="{Binding Post.Name}" Style="" HorizontalOptions="StartAndExpand" />
            <Label Text="[#tag]" Style="" HorizontalOptions="End" />
         </StackLayout>
         
-        <Label Text="[DESCRIPTION]">
-            
-        </Label>
-        
-        <Label Text="[Latitude - Longitude]" Style="" />
-        <Label Text="[Adresse]" Style="" />
+        <Label Text="{Binding Post.Description}"></Label>
         
         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <Label Text="{Binding Post.Latitude}" Style="" />
+            <Label Text=" - " Style="" />
+            <Label Text="{Binding Post.Longitude}" Style="" />
+        </StackLayout>
+        <Label Text="{Binding Post.Address}" Style="" />
+        
+        <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
            <Button Text="[Edit]" Command="{Binding EditPostDelegate}" HorizontalOptions="End" />
            <Button Text="[Remove]" Command="{Binding DeletePostDelegate}" HorizontalOptions="End" />
         </StackLayout>

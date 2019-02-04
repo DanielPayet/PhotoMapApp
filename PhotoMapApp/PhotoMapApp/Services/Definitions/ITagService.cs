@@ -5,9 +5,9 @@ using System.Text;
 
 namespace PhotoMapApp.Services.Definitions
 {
-    interface ITagService
+    public interface ITagService
     {
-        List<Tag> getTags();
-        Tag getTag(int id);
+        List<Tag> GetTags();
+        Tag GetTag(int id);
     }
 }

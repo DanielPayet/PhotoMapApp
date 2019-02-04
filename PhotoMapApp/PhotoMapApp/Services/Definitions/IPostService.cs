@@ -5,10 +5,10 @@ using System.Text;
 
 namespace PhotoMapApp.Services.Definitions
 {
-    interface IPostService
+    public interface IPostService
     {
-        List<Post> getPosts();
-        Post getPost(int id);
-        void createPost(string name, string description, List<Tag> tags, string image);
+        List<Post> GetPosts();
+        Post GetPost(int id);
+        void CreatePost(string name, string description, List<Tag> tags, string image, Double latitude, Double longitude, String address, DateTime dateTime);
     }
 }

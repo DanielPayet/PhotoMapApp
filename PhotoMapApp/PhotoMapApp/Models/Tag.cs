@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PhotoMapApp.Models
 {
-    class Tag
+    public class Tag
     {
         public string Name { get; set; }
 
