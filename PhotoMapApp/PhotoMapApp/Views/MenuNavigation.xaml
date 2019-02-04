@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+                  prism:ViewModelLocator.AutowireViewModel="True"
+                  x:Class="PhotoMapApp.Views.MenuNavigation">
+
+    <MasterDetailPage.Master>
+        <ContentPage Title="Menu">
+            <StackLayout Padding="20">
+                <Label
+                    Text="Accueil"
+                    FontSize="Large">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                           Command="{Binding NaviagtionCommand}"
+                           CommandParameter="MainPage" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <BoxView  
+                    VerticalOptions="Center"
+                    HorizontalOptions="StartAndExpand"
+                    HeightRequest="1"
+                    WidthRequest="100"  
+                    Color="Blue">
+                </BoxView>
+                <Label
+                    Text="Map"
+                    FontSize="Large">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                           Command="{Binding NaviagtionCommand}"
+                           CommandParameter="MapPage" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label
+                    Text="Enregistrement"
+                    FontSize="Large">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                           Command="{Binding NaviagtionCommand}"
+                           CommandParameter="PostPage" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label
+                    Text="Nouveau"
+                    FontSize="Large">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                           Command="{Binding NaviagtionCommand}"
+                           CommandParameter="NewPage" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+        </ContentPage>
+    </MasterDetailPage.Master>
+
+</MasterDetailPage>

@@ -14,7 +14,7 @@ namespace PhotoMapApp.ViewModels
         public DelegateCommand NavigateToPostPageDelegate { get; private set; }
 
         public MainPageViewModel(INavigationService navigationService) : base(navigationService) {
-            Title = "Main Page";
+            Title = "Accueil";
             this.NavigateToPostPageDelegate = new DelegateCommand(NavigateToPostPageAction);
         }
 

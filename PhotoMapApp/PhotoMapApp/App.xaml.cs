@@ -25,7 +25,7 @@ namespace PhotoMapApp
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            await NavigationService.NavigateAsync("MenuNavigation/NavigationPage/MainPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -39,6 +39,7 @@ namespace PhotoMapApp
 
             containerRegistry.RegisterSingleton<IPostService, PostService>();
             containerRegistry.RegisterSingleton<ITagService, TagService>();
+            containerRegistry.RegisterForNavigation<MenuNavigation, MenuNavigationViewModel>();
         }
     }
 }
