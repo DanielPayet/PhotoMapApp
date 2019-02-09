@@ -20,10 +20,6 @@ namespace PhotoMapApp
         public App() : this(null) {}
 
         public App(IPlatformInitializer initializer) : base(initializer) {
-            // Initialize Live Reload.
-            #if DEBUG
-            LiveReload.Init();
-            #endif
         }
 
         protected override async void OnInitialized()

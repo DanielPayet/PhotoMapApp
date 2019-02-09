@@ -9,6 +9,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:DateConverter x:Key="DateConverter"></converters:DateConverter>
+            <converters:TagsConverter x:Key="TagsConverter"></converters:TagsConverter>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -16,7 +17,8 @@
             x:Name="ListPizza"
             ItemsSource="{Binding Posts}"
             HasUnevenRows="True"
-            SelectionMode="Single">
+            SeparatorVisibility="None"
+            SelectionMode="None">
 
         <ListView.Behaviors>
             <b:EventToCommandBehavior EventName="ItemTapped" 
@@ -41,7 +43,7 @@
                             <Label
                                 Text="{Binding Name}"/>
                             <Label
-                                Text="{Binding Tag.Name}"/>
+                                Text="{Binding Tags, Converter={StaticResource TagsConverter}}"/>
                         </StackLayout>
                      
                         <Label
