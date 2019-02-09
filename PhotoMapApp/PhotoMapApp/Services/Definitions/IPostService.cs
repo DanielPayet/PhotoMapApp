@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace PhotoMapApp.Services.Definitions
 {
@@ -9,6 +10,6 @@ namespace PhotoMapApp.Services.Definitions
     {
         List<Post> GetPosts();
         Post GetPost(int id);
-        void CreatePost(string name, string description, Tag tag, string image, Double latitude, Double longitude, String address, DateTime dateTime);
+        void CreatePost(string name, string description, Tag tag, ImageSource image, Double latitude, Double longitude, String address, DateTime dateTime);
     }
 }

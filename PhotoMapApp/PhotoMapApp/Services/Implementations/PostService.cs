@@ -3,6 +3,7 @@ using PhotoMapApp.Services.Definitions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace PhotoMapApp.Services.Implementations
 {
@@ -10,10 +11,13 @@ namespace PhotoMapApp.Services.Implementations
     {
         private List<Post> _posts { get; set; }
 
-        public PostService()
+        public PostService(IImageService imageService)
         {
             this._posts = new List<Post> {
-                new Post("Post de test", "Ceci est une description", new Tag("THOMINOU"), "null", 1.2948848, 43.39494, "Rue du gros prout de Daniel", new DateTime())
+                new Post("Post de test", "Ceci est une description", new Tag("THOMINOU"), imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now),
+                new Post("Post de test", "Ceci est une description", new Tag("THOMINOU"), imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now),
+                new Post("Post de test", "Ceci est une description", new Tag("THOMINOU"), imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now),
+                new Post("Post de test", "Ceci est une description", new Tag("THOMINOU"), imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now)
             };
         }
 
@@ -27,7 +31,7 @@ namespace PhotoMapApp.Services.Implementations
             return this._posts[id];
         }
 
-        public void CreatePost(string name, string description, Tag tag, string image, Double latitude, Double longitude, String address, DateTime dateTime)
+        public void CreatePost(string name, string description, Tag tag, ImageSource image, Double latitude, Double longitude, String address, DateTime dateTime)
         {
             this._posts.Add(new Post(name, description, tag, image, latitude, longitude, address, dateTime));
         }

@@ -3,8 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             xmlns:converters="clr-namespace:PhotoMapApp.Converter;assembly=PhotoMapApp"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="PhotoMapApp.Views.ListPostPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:DateConverter x:Key="DateConverter"></converters:DateConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ListView
             x:Name="ListPizza"
@@ -21,13 +27,17 @@
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
+                    
                     <StackLayout
-                            BackgroundColor="Beige"
+                            BackgroundColor="White"
                             Orientation="Horizontal"
                             VerticalOptions="FillAndExpand"
-                            Padding="15">
+                            Margin="10"
+                            Padding="10, 5">
 
-                        <StackLayout>
+                        <Image Source="{Binding Image}" WidthRequest="80" HeightRequest="80">
+                        </Image>
+                        <StackLayout Padding="5">
                             <Label
                                 Text="{Binding Name}"/>
                             <Label
@@ -35,7 +45,7 @@
                         </StackLayout>
                      
                         <Label
-                                Text="TIME"
+                                Text="{Binding DateTime, Converter={StaticResource DateConverter}}"
                                 VerticalOptions="Start"
                                 HorizontalOptions="EndAndExpand"
                                 HorizontalTextAlignment="End"/>

@@ -6,13 +6,16 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xamarin.Forms;
 
 namespace PhotoMapApp.ViewModels
 {
 	public class ListPostPageViewModel : ViewModelBase
 	{
         private IPostService _postService;
+        private IImageService _imageService;
         private List<Post> _posts = new List<Post>();
+
         public List<Post> Posts
         {
             get { return _posts; }
@@ -21,9 +24,10 @@ namespace PhotoMapApp.ViewModels
         
         public DelegateCommand<Post> OpenPostCommand { get; private set; } 
 
-        public ListPostPageViewModel(INavigationService navigationService, IPostService postService): base (navigationService)
+        public ListPostPageViewModel(INavigationService navigationService, IPostService postService, IImageService imageService): base (navigationService)
         {
             this._postService = postService;
+            this._imageService = imageService;
             this.Posts = postService.GetPosts();
             OpenPostCommand = new DelegateCommand<Post>(OpenPostDetail);
         }
