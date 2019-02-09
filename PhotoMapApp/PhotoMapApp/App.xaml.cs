@@ -44,6 +44,7 @@ namespace PhotoMapApp
             containerRegistry.RegisterSingleton<IPostService, PostService>();
             containerRegistry.RegisterSingleton<ITagService, TagService>();
             containerRegistry.RegisterSingleton<IImageService, ImageService>();
+            containerRegistry.RegisterSingleton<IDatabase, Database>();
 
         }
     }

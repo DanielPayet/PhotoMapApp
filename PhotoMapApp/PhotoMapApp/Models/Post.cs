@@ -7,6 +7,7 @@ namespace PhotoMapApp.Models
 {
     public class Post
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public Tag Tag { get; set; }
@@ -15,6 +16,8 @@ namespace PhotoMapApp.Models
         public Double Longitude { get; set; }
         public String Address { get; set; }
         public DateTime DateTime { get; set; }
+
+        public Post() { }
 
         public Post(string name, string description,Tag tag, string image, Double latitude, Double longitude, String address, DateTime dateTime)
         {
