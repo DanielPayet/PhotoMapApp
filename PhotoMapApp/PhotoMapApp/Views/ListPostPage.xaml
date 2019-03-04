@@ -13,8 +13,13 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <StackLayout>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" >
+            <Button Text="Reverse" Command="{Binding inverseListCommand}" HorizontalOptions="End" >
+            </Button>
+        </StackLayout>
+
     <ListView
-            x:Name="ListPizza"
             ItemsSource="{Binding Posts}"
             HasUnevenRows="True"
             SeparatorVisibility="None"
@@ -56,4 +61,5 @@
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
+    </StackLayout>
 </ContentPage>
