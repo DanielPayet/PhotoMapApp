@@ -2,8 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"             
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"    
              Title="{Binding Title}"
-             xmlns:local="clr-namespace:XamarinMaps"
-             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"             
              x:Class="PhotoMapApp.Views.MapPage">
-    <maps:Map MapType="Street" />
+    <ContentPage.Content>
+        <ContentView Content="{Binding Map}"/>
+    </ContentPage.Content>
 </ContentPage>

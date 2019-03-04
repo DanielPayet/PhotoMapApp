@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms.Maps;
 using Xamarin.Forms;
 
 namespace PhotoMapApp.Models
@@ -29,6 +30,11 @@ namespace PhotoMapApp.Models
             this.Longitude = longitude;
             this.Address = address;
             this.DateTime = dateTime;
+        }
+
+        public Position GetPosition()
+        {
+            return new Position(this.Latitude, this.Longitude);
         }
     }
 }

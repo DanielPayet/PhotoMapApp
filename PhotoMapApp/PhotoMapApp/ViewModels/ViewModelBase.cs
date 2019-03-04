@@ -24,6 +24,7 @@ namespace PhotoMapApp.ViewModels
             NavigationService = navigationService;
         }
 
+
         public virtual void OnNavigatedFrom(INavigationParameters parameters)
         {
 
