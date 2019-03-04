@@ -39,6 +39,7 @@ namespace PhotoMapApp
             containerRegistry.RegisterForNavigation<AddPostPage, AddPostPageViewModel>();
             containerRegistry.RegisterForNavigation<MenuNavigation, MenuNavigationViewModel>();
             containerRegistry.RegisterForNavigation<ListPostPage, ListPostPageViewModel>();
+            containerRegistry.RegisterForNavigation<MapPage, MapPageViewModel>();
 
             // Services
 
