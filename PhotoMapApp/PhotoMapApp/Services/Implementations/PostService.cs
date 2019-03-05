@@ -14,8 +14,8 @@ namespace PhotoMapApp.Services.Implementations
         public PostService(IImageService imageService)
         {
             this._posts = new List<Post> {
-                new Post("Post de test", "Ceci est une description", new List<Tag>{new Tag("THOMINOU"), new Tag("dadou")}, imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now),
-                new Post("Post de test", "Ceci est une description", new List<Tag>{new Tag("THOMINOU")}, imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now.AddDays(-1)),
+                new Post("Post de test", "Ceci est une description", new List<Tag>{new Tag("THOMINOU"), new Tag("Drink") }, imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now),
+                new Post("Post de test", "Ceci est une description", new List<Tag>{new Tag("Drink"), new Tag("Food") }, imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now.AddDays(-1)),
                 new Post("Post de test", "Ceci est une description", new List<Tag>{new Tag("THOMINOU")}, imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now.AddDays(-8)),
                 new Post("Post de test", "Ceci est une description", new List<Tag>{new Tag("THOMINOU")}, imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now.AddDays(-35)),
                 new Post("Post de test", "Ceci est une description", new List<Tag>{new Tag("THOMINOU")}, imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now.AddDays(-845))

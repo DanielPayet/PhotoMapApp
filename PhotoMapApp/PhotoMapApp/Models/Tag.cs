@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PhotoMapApp.Models
 {
-    public class Tag
+    public class Tag: IEquatable<Tag>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -14,6 +14,11 @@ namespace PhotoMapApp.Models
         public Tag(string name)
         {
             this.Name = '#' + name;
+        }
+
+        public bool Equals(Tag tag)
+        {
+            return Name.Equals(tag.Name);
         }
     }
 }

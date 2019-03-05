@@ -14,8 +14,22 @@
     </ContentPage.Resources>
 
     <StackLayout>
-        <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" >
-            <Button Text="Reverse" Command="{Binding inverseListCommand}" HorizontalOptions="End" >
+        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
+            <StackLayout>
+                <Picker
+                ItemsSource="{Binding Tags}"
+                ItemDisplayBinding="{Binding Tag.Name}"
+                SelectedItem="{Binding SelectedTag}"
+                Title="Tags..."
+                FontSize="20"
+                WidthRequest="100"/>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Clear" IsVisible="{Binding IsClearFiltreVisible}" Command="{Binding ClearFilterCommand}"></Button>
+                    <Label Text="{Binding TagsSelectedList }"/>
+                </StackLayout>
+            </StackLayout>
+            
+            <Button Text="Reverse" Command="{Binding InverseListCommand}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" >
             </Button>
         </StackLayout>
 
