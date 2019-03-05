@@ -40,6 +40,7 @@ namespace PhotoMapApp
             containerRegistry.RegisterForNavigation<MenuNavigation, MenuNavigationViewModel>();
             containerRegistry.RegisterForNavigation<ListPostPage, ListPostPageViewModel>();
             containerRegistry.RegisterForNavigation<MapPage, MapPageViewModel>();
+            containerRegistry.RegisterForNavigation<NewPost, NewPostViewModel>();
 
             // Services
 
@@ -47,7 +48,6 @@ namespace PhotoMapApp
             containerRegistry.RegisterSingleton<ITagService, TagService>();
             containerRegistry.RegisterSingleton<IImageService, ImageService>();
             containerRegistry.RegisterSingleton<IDatabase, Database>();
-
         }
     }
 }

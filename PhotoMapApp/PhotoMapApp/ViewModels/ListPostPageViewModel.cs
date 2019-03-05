@@ -64,19 +64,47 @@ namespace PhotoMapApp.ViewModels
             set { SetProperty(ref _isClearFiltreVisible, value); }
         }
 
+        private bool _isListAscendant = true;
+        public bool IsListAscendant
+        {
+            get {
+                return _isListAscendant;
+            }
+            set { SetProperty(ref _isListAscendant, value); }
+        }
+
         public DelegateCommand<Post> OpenPostCommand { get; private set; } 
-        public DelegateCommand InverseListCommand { get; private set; }
+        public DelegateCommand ASCListCommand { get; private set; }
+        public DelegateCommand DESCListCommand { get; private set; }
         public DelegateCommand ClearFilterCommand { get; private set; }
+
+        public ImageSource ASCButtonImageSource { get; private set; }
+        public ImageSource DESCButtonImageSource { get; private set; }
 
         public ListPostPageViewModel(INavigationService navigationService, IPostService postService, IImageService imageService, ITagService tagService): base (navigationService)
         {
+            Title = "Enregistrements";
             this._postService = postService;
             this._imageService = imageService;
-            this.Posts = new ObservableCollection<Post>(OrderedList(postService.GetPosts()));
             this.Tags = tagService.GetTags().ConvertAll((tag)=> new TagView(tag));
             OpenPostCommand = new DelegateCommand<Post>(OpenPostDetail);
-            InverseListCommand = new DelegateCommand(ReverseList);
+            ASCListCommand = new DelegateCommand(orderByASC, ()=> !IsListAscendant).ObservesProperty(() => IsListAscendant);
+            DESCListCommand = new DelegateCommand(orderByDESC, () => IsListAscendant).ObservesProperty(() => IsListAscendant);
             ClearFilterCommand = new DelegateCommand(ClearFilter);
+            this.ASCButtonImageSource = this._imageService.GetSource("Icons.arrowDown.png");
+            this.DESCButtonImageSource = this._imageService.GetSource("Icons.arrowUp.png");
+        }
+
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+            OrderedList(_postService.GetPosts());
+        }
+
+        public override void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            base.OnNavigatedFrom(parameters);
+            OrderedList(_postService.GetPosts());
         }
 
         private void OpenPostDetail(Post post)
@@ -86,15 +114,34 @@ namespace PhotoMapApp.ViewModels
             base.NavigationService.NavigateAsync("PostPage", navigationParam);
         }
 
-        private List<Post> OrderedList(List<Post> posts)
+        private void OrderedList(List<Post> posts)
         {
-            posts.OrderBy((x) => x.DateTime);
-            return posts;
+            if (IsListAscendant) {
+                Posts = new ObservableCollection<Post>(posts.OrderBy((x) => x.DateTime.TimeOfDay));
+            } else {
+                Posts = new ObservableCollection<Post>(posts.OrderByDescending((x) => x.DateTime.TimeOfDay));
+            }
         }
 
-        private void ReverseList()
+        private void OrderedList()
         {
-            this.Posts = new ObservableCollection<Post>(Posts.Reverse());
+            if (IsListAscendant) {
+                Posts = new ObservableCollection<Post>(Posts.OrderBy((x) => x.DateTime.TimeOfDay));
+            } else {
+                Posts = new ObservableCollection<Post>(Posts.OrderByDescending(x => x.DateTime.TimeOfDay));
+            }
+        }
+
+        private void orderByASC()
+        {
+            IsListAscendant = true;
+            OrderedList();
+        }
+
+        private void orderByDESC()
+        {
+            IsListAscendant = false;
+            OrderedList();
         }
 
         private void AddListFiltre(TagView tag)
@@ -116,11 +163,11 @@ namespace PhotoMapApp.ViewModels
         {
             List<Tag> tagsSelected = Tags.FindAll(tag => tag.IsSelected).ConvertAll(tagview => tagview.Tag);
             if (!tagsSelected.Any()) {
-                this.Posts = new ObservableCollection<Post>(_postService.GetPosts());
+                OrderedList(_postService.GetPosts());
             } else {
-                this.Posts = new ObservableCollection<Post>(
+                OrderedList(
                     _postService.GetPosts()
-                    .Where(post => ContainsAll(post.Tags, tagsSelected)));
+                    .Where(post => ContainsAll(post.Tags, tagsSelected)).ToList());
             }
         }
 

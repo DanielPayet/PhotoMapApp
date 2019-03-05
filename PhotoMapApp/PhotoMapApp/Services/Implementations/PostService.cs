@@ -36,5 +36,10 @@ namespace PhotoMapApp.Services.Implementations
         {
             this._posts.Add(new Post(name, description, tags, image, latitude, longitude, address, dateTime));
         }
+
+        public void AddPost(Post post)
+        {
+            this._posts.Add(post);
+        }
     }
 }

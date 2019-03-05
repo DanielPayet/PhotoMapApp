@@ -28,9 +28,10 @@
                     <Label Text="{Binding TagsSelectedList }"/>
                 </StackLayout>
             </StackLayout>
-            
-            <Button Text="Reverse" Command="{Binding InverseListCommand}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" >
-            </Button>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="0, 10, 0, 0">
+                <ImageButton Source="{Binding ASCButtonImageSource}" Command="{Binding ASCListCommand}" Style="{StaticResource iconButton}" HorizontalOptions="End" />
+                <ImageButton Source="{Binding DSCButtonImageSource}" Command="{Binding DESCListCommand}" Style="{StaticResource iconButton}" HorizontalOptions="End" Margin="10, 0, 0, 0" />
+            </StackLayout>
         </StackLayout>
 
     <ListView

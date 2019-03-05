@@ -47,7 +47,7 @@
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer
                            Command="{Binding NaviagtionCommand}"
-                           CommandParameter="NewPage" />
+                           CommandParameter="NewPost" />
                     </Label.GestureRecognizers>
                 </Label>
             </StackLayout>
