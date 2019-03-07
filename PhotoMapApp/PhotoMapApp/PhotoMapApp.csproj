@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
     <PackageReference Include="Xamarin.Forms" Version="3.5.0.169047" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.1.0.431" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
@@ -13,16 +14,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Icons\arrowDown.png" />
+    <None Remove="Resources\Icons\arrowUp.png" />
+    <None Remove="Resources\Icons\checkboxOff.png" />
+    <None Remove="Resources\Icons\checkboxOn.png" />
     <None Remove="Ressources\profil.png" />
     <None Remove="Resources\profil.png" />
     <None Remove="Resources\Icons\delete.png" />
     <None Remove="Resources\Icons\edit.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
-    <Folder Include="Resources\Icons\" />
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="Resources\Icons\arrowDown.png" />
+    <EmbeddedResource Include="Resources\Icons\arrowUp.png" />
+    <EmbeddedResource Include="Resources\Icons\checkboxOff.png" />
+    <EmbeddedResource Include="Resources\Icons\checkboxOn.png" />
     <EmbeddedResource Include="Resources\profil.png" />
     <EmbeddedResource Include="Resources\Icons\delete.png" />
     <EmbeddedResource Include="Resources\Icons\edit.png" />
@@ -46,8 +51,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Mono.Android">
-      <HintPath>..\..\..\..\..\..\..\Library\Frameworks\Xamarin.Android.framework\Versions\9.1.8-0\lib\xamarin.android\xbuild-frameworks\MonoAndroid\v8.1\Mono.Android.dll</HintPath>
-    </Reference>
+    <Folder Include="Resources\Pictures\" />
   </ItemGroup>
 </Project>

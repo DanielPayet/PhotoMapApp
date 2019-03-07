@@ -1,8 +1,11 @@
 ﻿using PhotoMapApp.Models;
 using PhotoMapApp.Services.Definitions;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +19,7 @@ namespace PhotoMapApp.ViewModels
         private ITagService _tagService;
         private IPostService _postService;
         private IImageService _imageService;
+        private IPageDialogService _dialogService;
 
         private string _name;
         public string Name
@@ -79,11 +83,20 @@ namespace PhotoMapApp.ViewModels
         }
 
         public ImageSource SaveButtonImageSource { get; private set; }
+        public ImageSource PictureImageSource { get; private set; }
+
+        private ImageSource _imagePost;
+        public ImageSource ImagePost
+        {
+            get { return _imagePost; }
+            set { SetProperty(ref _imagePost, value); }
+        }
 
         public DelegateCommand ClearTagCommand { get; private set; }
         public DelegateCommand SavePostCommand { get; private set; }
+        public DelegateCommand OpenPhotoCommand { get; private set; }
 
-        public NewPostViewModel(INavigationService navigationService, ITagService tagService, IPostService postService, IImageService imageService): base(navigationService)
+        public NewPostViewModel(INavigationService navigationService, ITagService tagService, IPostService postService, IImageService imageService, IPageDialogService dialogService) : base(navigationService)
         {
             Title = "Nouveau";
             _tagService = tagService;
@@ -91,6 +104,9 @@ namespace PhotoMapApp.ViewModels
             _imageService = imageService;
             Tags = new ObservableCollection<Tag>(_tagService.GetTags());
             SavePostCommand = new DelegateCommand(SavePost);
+            OpenPhotoCommand = new DelegateCommand(openPhotoAsync, ()=> ImagePost == null).ObservesProperty(()=> ImagePost);
+            this.SaveButtonImageSource = this._imageService.GetSource("Icons.arrowUp.png");
+
         }
 
         private void AddToSelectedTags(Tag value)
@@ -118,10 +134,37 @@ namespace PhotoMapApp.ViewModels
 
         private void SavePost()
         {
-            var post = new Post(Name, Description, SelectedTags, _imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now);
+            var post = new Post(Name, Description, SelectedTags, ImagePost, 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now);
             _postService.AddPost(post);
             var navigationParam = new NavigationParameters {{ "post", post }};
             base.NavigationService.NavigateAsync("/MenuNavigation/NavigationPage/ListPostPage/PostPage", navigationParam);
+        }
+
+        private async void openPhotoAsync()
+        {
+            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported) {
+                await _dialogService.DisplayAlertAsync("Aucun appareil photo", "Aucun appareil photo n'est disponible", "OK");
+                return;
+            }
+
+            var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions {
+                Directory = "Pictures",
+                SaveToAlbum = true,
+                CompressionQuality = 50,
+                CustomPhotoSize = 50,
+                PhotoSize = PhotoSize.MaxWidthHeight,
+                MaxWidthHeight = 2000,
+                DefaultCamera = CameraDevice.Rear
+            });
+
+            if (file == null)
+                return;
+
+            ImagePost = ImageSource.FromStream(() =>
+            {
+                var stream = file.GetStream();
+                return stream;
+            });
         }
     }
 }

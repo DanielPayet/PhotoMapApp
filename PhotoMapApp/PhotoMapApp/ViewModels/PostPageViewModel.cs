@@ -20,7 +20,8 @@ namespace PhotoMapApp.ViewModels
         public DelegateCommand EditPostDelegate { get; private set; }
         private IImageService _imageService;
 
-        public ImageSource BannerImageSource { get; private set; }
+        private ImageSource _bannerImageSource;
+        public ImageSource BannerImageSource { get { return _bannerImageSource; } set { SetProperty(ref _bannerImageSource, value); } }
         public ImageSource EditButtonImageSource { get; private set; }
         public ImageSource DeleteButtonImageSource { get; private set; }
 
@@ -33,7 +34,6 @@ namespace PhotoMapApp.ViewModels
             this.EditPostDelegate = new DelegateCommand(EditPostCommand);
 
             // Resources
-            this.BannerImageSource = this._imageService.GetSource("profil.png");
             this.EditButtonImageSource = this._imageService.GetSource("Icons.edit.png");
             this.DeleteButtonImageSource = this._imageService.GetSource("Icons.delete.png");
         }
@@ -42,6 +42,7 @@ namespace PhotoMapApp.ViewModels
         {
             this.Post = (Post)parameters["post"];
             this.Title = Post.Name;
+            this.BannerImageSource = Post.Image;
         }
 
         private async void DeletePostCommand()
