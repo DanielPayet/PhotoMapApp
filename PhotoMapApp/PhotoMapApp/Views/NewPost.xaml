@@ -10,7 +10,7 @@
             VerticalOptions="FillAndExpand"
             Padding="15,30,15,30">
             <Image Source="{Binding ImagePost}" HeightRequest="300" WidthRequest="300" HorizontalOptions="Center"></Image>
-            <Button Text="Ajouter une image" Command="{Binding OpenPhotoCommand}" Style="{StaticResource iconButton}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+            <Button Text="Ajouter une image" Command="{Binding OpenPhotoCommand}" IsVisible="{Binding IsNewPostMode}"/>
             <StackLayout
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand"

@@ -5,6 +5,8 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Plugin.Geolocator;
+
 
 namespace PhotoMapApp.ViewModels
 {

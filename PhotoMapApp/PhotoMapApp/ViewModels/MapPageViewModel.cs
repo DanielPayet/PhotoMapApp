@@ -20,8 +20,6 @@ namespace PhotoMapApp.ViewModels
         private IPostService _postService;
         private IGeolocationService _geolocationService;
         public Map Map { get; private set; }
-        private ObservableCollection<Pin> _pinCollection = new ObservableCollection<Pin>();
-        public ObservableCollection<Pin> PinCollection { get { return _pinCollection; } set { _pinCollection = value; OnPropertyChanged(); } }
 
         public MapPageViewModel(INavigationService navigationService, IPostService postService, IGeolocationService geolocationService) : base(navigationService)
         {
@@ -40,14 +38,13 @@ namespace PhotoMapApp.ViewModels
             {
                 Map.Pins.Add(new Pin() { Position = post.GetPosition(), Type = PinType.Generic, Label = post.Name });
             }
-            System.Diagnostics.Debug.WriteLine("TEST");
 
             UpdateMapCenterAsync();
         }
 
         public async void UpdateMapCenterAsync() 
         {
-            var position = await _geolocationService.GetCurrentPositionAsync();
+            var position = await _geolocationService.GetCurrentPosition();
             this.Map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromMiles(1)));
         }
     }

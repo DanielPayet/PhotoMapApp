@@ -1,15 +1,10 @@
 ﻿using PhotoMapApp.Models;
 using PhotoMapApp.Services.Definitions;
-using Plugin.Media;
-using Plugin.Media.Abstractions;
 using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
-using Prism.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Xamarin.Forms;
 
 namespace PhotoMapApp.ViewModels
@@ -20,8 +15,16 @@ namespace PhotoMapApp.ViewModels
         private IPostService _postService;
         private IImageService _imageService;
         private IMediaService _mediaService;
+        private IGeolocationService _geolocationService;
 
-        private bool IsEditMode { get; set; }
+        private bool _isNewPostMode;
+        public bool IsNewPostMode
+        {
+            get {
+                return _isNewPostMode;
+            }
+            set { SetProperty(ref _isNewPostMode, value); }
+        }
         private Post postEdition { get; set; }
 
         private string _name;
@@ -100,18 +103,20 @@ namespace PhotoMapApp.ViewModels
         public DelegateCommand SavePostCommand { get; private set; }
         public DelegateCommand OpenPhotoCommand { get; private set; }
 
-        public NewPostViewModel(INavigationService navigationService, ITagService tagService, IPostService postService, IImageService imageService, IMediaService mediaService) : base(navigationService)
+        public NewPostViewModel(INavigationService navigationService, ITagService tagService, IPostService postService, IImageService imageService, IMediaService mediaService, IGeolocationService geolocationService) : base(navigationService)
         {
             Title = "Nouveau";
             _tagService = tagService;
             _postService = postService;
             _imageService = imageService;
+            _geolocationService = geolocationService;
             Tags = new ObservableCollection<Tag>(_tagService.GetTags());
+            ClearTagCommand = new DelegateCommand(ClearFilter);
             SavePostCommand = new DelegateCommand(SavePost);
             OpenPhotoCommand = new DelegateCommand(getPhoto);
-            SaveButtonImageSource = _imageService.GetSource("Icons.arrowUp.png");
+            SaveButtonImageSource = _imageService.GetSource("Icons.save.png");
             _mediaService = mediaService;
-            IsEditMode = false;
+            IsNewPostMode = true;
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
@@ -123,7 +128,7 @@ namespace PhotoMapApp.ViewModels
                 Name = post.Name;
                 Description = post.Description;
                 post.Tags.ForEach(tag => AddToSelectedTags(tag));
-                IsEditMode = true;
+                IsNewPostMode = false;
                 postEdition = post;
             }
         }
@@ -151,21 +156,27 @@ namespace PhotoMapApp.ViewModels
             IsClearTagSelectedVisible = false;
         }
 
-        private void SavePost()
+        private async void SavePost()
         {
             Post post;
-            if (IsEditMode) {
+            if (IsNewPostMode) {
+                var position = await _geolocationService.GetCurrentPosition();
+                post = new Post(Name, Description, SelectedTags, ImagePath, position.Latitude, position.Longitude, "Rue du gros prout de Daniel", DateTime.Now);
+                _postService.CreatePost(post);
                 post = postEdition;
                 post.Name = Name;
                 post.Description = Description;
                 post.Tags = SelectedTags;
                 _postService.Update(post);
             } else {
-                post = new Post(Name, Description, SelectedTags, ImagePath, 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now);
-                _postService.CreatePost(post);
+                post = postEdition;
+                post.Name = Name;
+                post.Description = Description;
+                post.Tags = SelectedTags;
+                _postService.Update(post);
             }
             var navigationParam = new NavigationParameters { { "post", post } };
-            NavigationService.NavigateAsync("/MenuNavigation/NavigationPage/ListPostPage/PostPage", navigationParam);
+            await NavigationService.NavigateAsync("/MenuNavigation/NavigationPage/ListPostPage/PostPage", navigationParam);
         }
 
         private async void getPhoto()
