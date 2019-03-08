@@ -1,9 +1,7 @@
 ﻿using PhotoMapApp.Models;
 using PhotoMapApp.Services.Definitions;
 using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -81,6 +79,20 @@ namespace PhotoMapApp.ViewModels
         public ImageSource ASCButtonImageSource { get; private set; }
         public ImageSource DESCButtonImageSource { get; private set; }
 
+        private bool _isEmptyPost = true;
+        public bool IsEmptyPost
+        {
+            get { return _isEmptyPost; }
+            set { SetProperty(ref _isEmptyPost, value); }
+        }
+
+        private bool _isActionVisible = false;
+        public bool IsActionVisible
+        {
+            get { return _isActionVisible; }
+            set { SetProperty(ref _isActionVisible, value); }
+        }
+
         public ListPostPageViewModel(INavigationService navigationService, IPostService postService, IImageService imageService, ITagService tagService): base (navigationService)
         {
             Title = "Enregistrements";
@@ -99,12 +111,14 @@ namespace PhotoMapApp.ViewModels
         {
             base.OnNavigatedTo(parameters);
             OrderedList(_postService.GetPosts());
+            checkIfPostsIsEmpty();
         }
 
         public override void OnNavigatedFrom(INavigationParameters parameters)
         {
             base.OnNavigatedFrom(parameters);
             OrderedList(_postService.GetPosts());
+            checkIfPostsIsEmpty();
         }
 
         private void OpenPostDetail(Post post)
@@ -141,6 +155,17 @@ namespace PhotoMapApp.ViewModels
         {
             IsListAscendant = false;
             OrderedList();
+        }
+
+        private void checkIfPostsIsEmpty()
+        {
+            if (Posts.Count > 0) {
+                IsEmptyPost = false;
+                IsActionVisible = true;
+            } else {
+                IsEmptyPost = true;
+                IsActionVisible = false;
+            }
         }
 
         private void AddListFiltre(TagView tag)

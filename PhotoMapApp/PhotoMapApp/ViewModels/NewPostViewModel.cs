@@ -123,7 +123,7 @@ namespace PhotoMapApp.ViewModels
             _geolocationService = geolocationService;
             Tags = new ObservableCollection<Tag>(_tagService.GetTags());
             ClearTagCommand = new DelegateCommand(ClearFilter);
-            SavePostCommand = new DelegateCommand(SavePost);
+            SavePostCommand = new DelegateCommand(SavePost, CanSave).ObservesProperty(()=> Name).ObservesProperty(()=> Description).ObservesProperty(()=>ImagePath);
             OpenPhotoCommand = new DelegateCommand(GetPhoto);
             SaveButtonImageSource = _imageService.GetSource("Icons.save.png");
             IsNewPostMode = true;
@@ -141,6 +141,11 @@ namespace PhotoMapApp.ViewModels
                 IsNewPostMode = false;
                 postEdition = post;
             }
+        }
+
+        private bool CanSave()
+        {
+            return Name != "" && Description != "" && ImagePath != null;
         }
 
         private void AddToSelectedTags(Tag value)

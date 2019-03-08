@@ -14,7 +14,7 @@
     </ContentPage.Resources>
 
     <StackLayout Padding="30,20,30,0">
-        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
+        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsActionVisible}">
             <StackLayout>
                 <Picker
                 ItemsSource="{Binding Tags}"
@@ -33,12 +33,15 @@
                 <ImageButton Source="{Binding DESCButtonImageSource}" Command="{Binding DESCListCommand}" Style="{StaticResource iconButton}" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" Margin="10, 0, 0, 0" />
             </StackLayout>
         </StackLayout>
-
-    <ListView
+        <StackLayout IsVisible="{Binding IsEmptyPost}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Label Text="Aucun enregistrement." HorizontalOptions="Center" VerticalOptions="Center" FontSize="40"></Label>
+        </StackLayout>
+        <ListView
             ItemsSource="{Binding Posts}"
             HasUnevenRows="True"
             SeparatorVisibility="None"
-            SelectionMode="None">
+            SelectionMode="None"
+            IsVisible="{Binding IsActionVisible}">
 
         <ListView.Behaviors>
             <b:EventToCommandBehavior EventName="ItemTapped" 
