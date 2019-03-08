@@ -176,7 +176,8 @@ namespace PhotoMapApp.ViewModels
             Post post;
             if (IsNewPostMode) {
                 var position = await _geolocationService.GetCurrentPosition();
-                post = new Post(Name, Description, SelectedTags, ImagePath, position.Latitude, position.Longitude, "Rue du gros prout de Daniel", DateTime.Now);
+                var adresse = await _geolocationService.GetAdresseFromPosition(position);
+                post = new Post(Name, Description, SelectedTags, ImagePath, position.Latitude, position.Longitude, adresse, DateTime.Now);
                 _postService.CreatePost(post);
             } else {
                 post = postEdition;

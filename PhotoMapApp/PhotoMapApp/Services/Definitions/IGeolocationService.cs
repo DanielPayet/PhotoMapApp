@@ -1,11 +1,12 @@
 ﻿using System;
-using Plugin.Geolocator;
+using System.Threading.Tasks;
 using Xamarin.Forms.Maps;
 
 namespace PhotoMapApp.Services.Definitions
 {
     public interface IGeolocationService
     {
-        System.Threading.Tasks.Task<Position> GetCurrentPosition();
+        Task<Position> GetCurrentPosition();
+        Task<string> GetAdresseFromPosition(Position position);
     }
 }
