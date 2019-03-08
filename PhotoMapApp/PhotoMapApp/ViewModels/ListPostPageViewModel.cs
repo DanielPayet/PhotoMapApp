@@ -15,8 +15,16 @@ namespace PhotoMapApp.ViewModels
 	{
         private IPostService _postService;
         private IImageService _imageService;
-        private static ObservableCollection<Post> _posts = null;
+        private static List<TagView> _tags = null;
+        public List<TagView> Tags
+        {
+            get {
+                return _tags;
+            }
+            set { SetProperty(ref _tags, value); }
+        }
 
+        private static ObservableCollection<Post> _posts = null;
         public ObservableCollection<Post> Posts
         {
             get {
@@ -27,17 +35,76 @@ namespace PhotoMapApp.ViewModels
             }
             set { SetProperty(ref _posts, value); }
         }
-        
-        public DelegateCommand<Post> OpenPostCommand { get; private set; } 
-        public DelegateCommand inverseListCommand { get; private set; }
 
-        public ListPostPageViewModel(INavigationService navigationService, IPostService postService, IImageService imageService): base (navigationService)
+        private TagView _selectedTag;
+        public TagView SelectedTag
         {
+            get {
+                return _selectedTag;
+            }
+            set { SetProperty(ref _selectedTag, value); AddListFiltre(value);}
+        }
+
+        private const string EMPTY_FILTRE = "Aucun filtre";
+        private string _tagsSelectedList = EMPTY_FILTRE;
+        public string TagsSelectedList
+        {
+            get {
+                return _tagsSelectedList;
+            }
+            set { SetProperty(ref _tagsSelectedList, value); }
+        }
+
+        private bool _isClearFiltreVisible = false;
+        public bool IsClearFiltreVisible
+        {
+            get {
+                return _isClearFiltreVisible;
+            }
+            set { SetProperty(ref _isClearFiltreVisible, value); }
+        }
+
+        private bool _isListAscendant = true;
+        public bool IsListAscendant
+        {
+            get {
+                return _isListAscendant;
+            }
+            set { SetProperty(ref _isListAscendant, value); }
+        }
+
+        public DelegateCommand<Post> OpenPostCommand { get; private set; } 
+        public DelegateCommand ASCListCommand { get; private set; }
+        public DelegateCommand DESCListCommand { get; private set; }
+        public DelegateCommand ClearFilterCommand { get; private set; }
+
+        public ImageSource ASCButtonImageSource { get; private set; }
+        public ImageSource DESCButtonImageSource { get; private set; }
+
+        public ListPostPageViewModel(INavigationService navigationService, IPostService postService, IImageService imageService, ITagService tagService): base (navigationService)
+        {
+            Title = "Enregistrements";
             this._postService = postService;
             this._imageService = imageService;
-            this.Posts = new ObservableCollection<Post>(OrderedList(postService.GetPosts()));
+            this.Tags = tagService.GetTags().ConvertAll((tag)=> new TagView(tag));
             OpenPostCommand = new DelegateCommand<Post>(OpenPostDetail);
-            inverseListCommand = new DelegateCommand(ReverseList);
+            ASCListCommand = new DelegateCommand(orderByASC, ()=> !IsListAscendant).ObservesProperty(() => IsListAscendant);
+            DESCListCommand = new DelegateCommand(orderByDESC, () => IsListAscendant).ObservesProperty(() => IsListAscendant);
+            ClearFilterCommand = new DelegateCommand(ClearFilter);
+            this.ASCButtonImageSource = this._imageService.GetSource("Icons.arrowDown.png");
+            this.DESCButtonImageSource = this._imageService.GetSource("Icons.arrowUp.png");
+        }
+
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+            OrderedList(_postService.GetPosts());
+        }
+
+        public override void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            base.OnNavigatedFrom(parameters);
+            OrderedList(_postService.GetPosts());
         }
 
         private void OpenPostDetail(Post post)
@@ -47,15 +114,87 @@ namespace PhotoMapApp.ViewModels
             base.NavigationService.NavigateAsync("PostPage", navigationParam);
         }
 
-        private List<Post> OrderedList(List<Post> posts)
+        private void OrderedList(List<Post> posts)
         {
-            posts.OrderBy((x) => x.DateTime);
-            return posts;
+            if (IsListAscendant) {
+                Posts = new ObservableCollection<Post>(posts.OrderBy((x) => x.DateTime.TimeOfDay));
+            } else {
+                Posts = new ObservableCollection<Post>(posts.OrderByDescending((x) => x.DateTime.TimeOfDay));
+            }
         }
 
-        private void ReverseList()
+        private void OrderedList()
         {
-            this.Posts = new ObservableCollection<Post>(Posts.Reverse());
+            if (IsListAscendant) {
+                Posts = new ObservableCollection<Post>(Posts.OrderBy((x) => x.DateTime.TimeOfDay));
+            } else {
+                Posts = new ObservableCollection<Post>(Posts.OrderByDescending(x => x.DateTime.TimeOfDay));
+            }
+        }
+
+        private void orderByASC()
+        {
+            IsListAscendant = true;
+            OrderedList();
+        }
+
+        private void orderByDESC()
+        {
+            IsListAscendant = false;
+            OrderedList();
+        }
+
+        private void AddListFiltre(TagView tag)
+        {
+            if (tag != null && !tag.IsSelected) {
+                tag.IsSelected = true;
+                if (TagsSelectedList != EMPTY_FILTRE) {
+                    TagsSelectedList += ", ";
+                } else {
+                    TagsSelectedList = "";
+                    IsClearFiltreVisible = true;
+                }
+                TagsSelectedList += tag.Tag.Name;
+            }
+            UpdatePost();
+        }
+
+        private void UpdatePost()
+        {
+            List<Tag> tagsSelected = Tags.FindAll(tag => tag.IsSelected).ConvertAll(tagview => tagview.Tag);
+            if (!tagsSelected.Any()) {
+                OrderedList(_postService.GetPosts());
+            } else {
+                OrderedList(
+                    _postService.GetPosts()
+                    .Where(post => ContainsAll(post.Tags, tagsSelected)).ToList());
+            }
+        }
+
+        private static bool ContainsAll(List<Tag> tagsFromPost, List<Tag> tags)
+        {
+            return tags.TrueForAll(tag => tagsFromPost.Contains(tag));
+        }
+
+        private void ClearFilter()
+        {
+            IsClearFiltreVisible = false;
+            Tags.FindAll(tag => tag.IsSelected).ForEach((tag) => tag.IsSelected = false);
+            SelectedTag = null;
+            TagsSelectedList = EMPTY_FILTRE;
+            UpdatePost();
+        }
+    }
+
+    public class TagView
+    {
+        public Tag Tag { get; set; }
+        public bool IsSelected { get; set; }
+
+        public TagView(Tag tag)
+        {
+            this.Tag = tag;
+            this.IsSelected = false;
         }
     }
 }

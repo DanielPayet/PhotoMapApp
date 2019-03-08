@@ -3,5 +3,6 @@
   <PropertyGroup>
     <SelectedDevice>Samsung SM-T580</SelectedDevice>
     <AndroidDesignerPreferredTheme>Theme.DeviceDefault.NoActionBar.Fullscreen</AndroidDesignerPreferredTheme>
+    <DefaultDevice>Pixel_2_API_27</DefaultDevice>
   </PropertyGroup>
 </Project>

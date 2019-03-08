@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="PhotoMapApp.Views.NewPost">
+    <ScrollView>
+        <StackLayout
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+            Padding="15,30,15,30">
+            <ImageButton Source="{Binding ImagePost}" Command="{Binding OpenPhotoCommand}" Style="{StaticResource iconButton}" HeightRequest="300" WidthRequest="300" HorizontalOptions="Center"/>
+            <StackLayout
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                Margin="0,30,0,0">
+                <Entry
+                    Text="{Binding Name}"
+                    HorizontalOptions="FillAndExpand"
+                    Placeholder="Nom"
+                    Margin="0,0,5,0"/>
+                <Entry
+                    Text="{Binding Description}"
+                    HorizontalOptions="FillAndExpand"
+                    Placeholder="Description"
+                    Margin="0,0,5,0"/>
+                <Picker
+                    ItemsSource="{Binding Tags}"
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedItem="{Binding SelectedTag}"
+                    HorizontalOptions="FillAndExpand"
+                    Title="Choisir un tag a ajouter" />
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="x" IsVisible="{Binding IsClearTagSelectedVisible}" Command="{Binding ClearTagCommand}"></Button>
+                    <Label Text="{Binding SelectedTagsAsString}" VerticalOptions="Center"/>
+                </StackLayout>
+                <ImageButton Source="{Binding SaveButtonImageSource}" Command="{Binding SavePostCommand}" Style="{StaticResource iconButton}" HeightRequest="30" WidthRequest="30" HorizontalOptions="End"/>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

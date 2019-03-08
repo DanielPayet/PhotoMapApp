@@ -12,14 +12,14 @@ namespace PhotoMapApp.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public List<Tag> Tags { get; set; }
-        public ImageSource Image { get; set; }
-        public Double Latitude { get; set; }
-        public Double Longitude { get; set; }
-        public String Address { get; set; }
+        public string Image { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public string Address { get; set; }
         public DateTime DateTime { get; set; }
         public Post() { }
 
-        public Post(string name, string description, List<Tag> tags, ImageSource image, Double latitude, Double longitude, String address, DateTime dateTime)
+        public Post(string name, string description, List<Tag> tags, string image, double latitude, double longitude, string address, DateTime dateTime)
         {
             this.Name = name;
             this.Description = description;
