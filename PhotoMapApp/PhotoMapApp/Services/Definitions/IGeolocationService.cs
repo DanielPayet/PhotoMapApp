@@ -6,6 +6,6 @@ namespace PhotoMapApp.Services.Definitions
 {
     public interface IGeolocationService
     {
-        System.Threading.Tasks.Task<Position> GetCurrentPositionAsync();
+        System.Threading.Tasks.Task<Position> GetCurrentPosition();
     }
 }

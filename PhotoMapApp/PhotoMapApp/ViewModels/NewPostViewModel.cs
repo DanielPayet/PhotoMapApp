@@ -20,6 +20,7 @@ namespace PhotoMapApp.ViewModels
         private IPostService _postService;
         private IImageService _imageService;
         private IPageDialogService _dialogService;
+        private IGeolocationService _geolocationService;
 
         private string _name;
         public string Name
@@ -97,12 +98,13 @@ namespace PhotoMapApp.ViewModels
         public DelegateCommand SavePostCommand { get; private set; }
         public DelegateCommand OpenPhotoCommand { get; private set; }
 
-        public NewPostViewModel(INavigationService navigationService, ITagService tagService, IPostService postService, IImageService imageService, IPageDialogService dialogService) : base(navigationService)
+        public NewPostViewModel(INavigationService navigationService, ITagService tagService, IPostService postService, IImageService imageService, IPageDialogService dialogService, IGeolocationService geolocationService) : base(navigationService)
         {
             Title = "Nouveau";
             _tagService = tagService;
             _postService = postService;
             _imageService = imageService;
+            _geolocationService = geolocationService;
             Tags = new ObservableCollection<Tag>(_tagService.GetTags());
             SavePostCommand = new DelegateCommand(SavePost);
             OpenPhotoCommand = new DelegateCommand(openPhotoAsync, ()=> ImagePost == null).ObservesProperty(()=> ImagePost);
@@ -133,12 +135,13 @@ namespace PhotoMapApp.ViewModels
             IsClearTagSelectedVisible = false;
         }
 
-        private void SavePost()
+        private async void SavePost()
         {
-            var post = new Post(Name, Description, SelectedTags, ImagePath, 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now);
+            var position = await _geolocationService.GetCurrentPosition();
+            var post = new Post(Name, Description, SelectedTags, ImagePath, position.Latitude, position.Longitude, "Rue du gros prout de Daniel", DateTime.Now);
             _postService.CreatePost(post);
             var navigationParam = new NavigationParameters {{ "post", post }};
-            base.NavigationService.NavigateAsync("/MenuNavigation/NavigationPage/ListPostPage/PostPage", navigationParam);
+            await NavigationService.NavigateAsync("/MenuNavigation/NavigationPage/ListPostPage/PostPage", navigationParam);
         }
 
         private async void openPhotoAsync()
