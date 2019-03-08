@@ -2,6 +2,7 @@
 using PhotoMapApp.Services.Definitions;
 using Prism.Commands;
 using Prism.Navigation;
+using Prism.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +18,7 @@ namespace PhotoMapApp.ViewModels
         private IMediaService _mediaService;
         private IGeolocationService _geolocationService;
         private IDatabaseService _databaseService;
+        private IPageDialogService _dialogService;
 
         private bool _isNewPostMode;
         public bool IsNewPostMode
@@ -111,7 +113,8 @@ namespace PhotoMapApp.ViewModels
             IImageService imageService,
             IMediaService mediaService,
             IGeolocationService geolocationService,
-            IDatabaseService databaseService
+            IDatabaseService databaseService,
+            IPageDialogService dialogService
             ) : base(navigationService)
         {
             Title = "Nouveau";
@@ -121,6 +124,7 @@ namespace PhotoMapApp.ViewModels
             _mediaService = mediaService;
             _databaseService = databaseService;
             _geolocationService = geolocationService;
+            _dialogService = dialogService;
             Tags = new ObservableCollection<Tag>(_tagService.GetTags());
             ClearTagCommand = new DelegateCommand(ClearFilter);
             SavePostCommand = new DelegateCommand(SavePost, CanSave).ObservesProperty(()=> Name).ObservesProperty(()=> Description).ObservesProperty(()=>ImagePath);
@@ -173,18 +177,24 @@ namespace PhotoMapApp.ViewModels
 
         private async void SavePost()
         {
-            Post post;
+            Post post = null;
             if (IsNewPostMode) {
-                var position = await _geolocationService.GetCurrentPosition();
-                var adresse = await _geolocationService.GetAdresseFromPosition(position);
-                post = new Post(Name, Description, SelectedTags, ImagePath, position.Latitude, position.Longitude, adresse, DateTime.Now);
-                _postService.CreatePost(post);
+                var answer = await _dialogService.DisplayAlertAsync("Création d'un enregistrement", "Voulez-vous vraiment creer cette enregristrement ?", "Valider", "Annuler");
+                if (answer == true) {
+                    var position = await _geolocationService.GetCurrentPosition();
+                    var adresse = await _geolocationService.GetAdresseFromPosition(position);
+                    post = new Post(Name, Description, SelectedTags, ImagePath, position.Latitude, position.Longitude, adresse, DateTime.Now);
+                    _postService.CreatePost(post);
+                }
             } else {
-                post = postEdition;
-                post.Name = Name;
-                post.Description = Description;
-                post.Tags = SelectedTags;
-                _databaseService.UpdateOrSave(post);
+                var answer = await _dialogService.DisplayAlertAsync("Confirmer l'enregristrement", "Voulez-vous valider l'enregristrement ?", "Valider", "Annuler");
+                if (answer == true) {
+                    post = postEdition;
+                    post.Name = Name;
+                    post.Description = Description;
+                    post.Tags = SelectedTags;
+                    _databaseService.UpdateOrSave(post);
+                }
             }
             var navigationParam = new NavigationParameters { { "post", post } };
             await NavigationService.NavigateAsync("/MenuNavigation/NavigationPage/ListPostPage/PostPage", navigationParam);

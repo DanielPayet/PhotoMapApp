@@ -9,6 +9,7 @@ using Prism.Services;
 using PhotoMapApp.Models;
 using Xamarin.Forms;
 using PhotoMapApp.Services.Definitions;
+using Xamarin.Forms.Maps;
 
 namespace PhotoMapApp.ViewModels
 {
@@ -20,6 +21,8 @@ namespace PhotoMapApp.ViewModels
 
         private Post _post;
         public Post Post { get { return this._post; } set { SetProperty(ref this._post, value); }}
+        private Position _position;
+        public Position Position { get { return _position; } set { SetProperty(ref _position, value); } }
         public DelegateCommand DeletePostDelegate { get; private set; }
         public DelegateCommand<Post> EditPostDelegate { get; private set; }
 
@@ -51,6 +54,7 @@ namespace PhotoMapApp.ViewModels
             this.Post = (Post)parameters["post"];
             this.Title = Post.Name;
             this.BannerImageSource = ImageSource.FromFile(Post.Image);
+            Position = new Position(Post.Latitude, Post.Longitude);
         }
 
         private async void DeletePostCommand()
@@ -63,10 +67,13 @@ namespace PhotoMapApp.ViewModels
             }
         }
 
-        private void EditPostCommand(Post post)
+        private async void EditPostCommand(Post post)
         {
-            var navigationParam = new NavigationParameters { { "post", post } };
-            NavigationService.NavigateAsync("NewPost", navigationParam);
+            var answer = await _dialogService.DisplayAlertAsync("Edition de l'enregistrement", "Voulez-vous vraiment editer cette enregistrement ?", "Editer", "Annuler");
+            if (answer == true) {
+                var navigationParam = new NavigationParameters { { "post", post } };
+                await NavigationService.NavigateAsync("NewPost", navigationParam);
+            }
         }
    }
 }

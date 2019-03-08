@@ -4,7 +4,6 @@ using Plugin.Geolocator;
 using System.Threading.Tasks;
 using Plugin.Geolocator.Abstractions;
 using Position = Xamarin.Forms.Maps.Position;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace PhotoMapApp.Services.Implementations
@@ -26,8 +25,9 @@ namespace PhotoMapApp.Services.Implementations
 
         public async Task<string> GetAdresseFromPosition(Position position)
         {
-            if (!CrossGeolocator.IsSupported || !CrossGeolocator.Current.IsGeolocationEnabled || !CrossGeolocator.Current.IsGeolocationAvailable) {
-                return "";
+            bool isInternetAvailable = System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();
+            if (!isInternetAvailable && !CrossGeolocator.IsSupported || !CrossGeolocator.Current.IsGeolocationEnabled || !CrossGeolocator.Current.IsGeolocationAvailable) {
+                return "Adresse inconnue";
             } else {
                 var geolocatorPosition = new Plugin.Geolocator.Abstractions.Position(position.Latitude, position.Longitude);
                 Address adresse = ( await CrossGeolocator.Current.GetAddressesForPositionAsync(geolocatorPosition) ).ToList().First();
