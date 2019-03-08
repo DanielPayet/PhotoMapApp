@@ -8,7 +8,7 @@
         <Label Text="Projet développement mobile" />
         <Label Text="2018 / 2019" />
         <Label Text="Groupe : Payet - Lemaire" />
-        <Button Text="Page post test" Command="{Binding NavigateToPostPageDelegate}" />
+        <Button Text="Ajouter un enregistrement" Command="{Binding NavigateToNewPostPageDelegate}" />
     </StackLayout>
 
 </ContentPage>

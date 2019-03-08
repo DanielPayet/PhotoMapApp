@@ -16,7 +16,8 @@ namespace PhotoMapApp.ViewModels
         private static List<TagView> _tags = null;
         public List<TagView> Tags
         {
-            get {
+            get
+            {
                 return _tags;
             }
             set { SetProperty(ref _tags, value); }
@@ -173,7 +174,7 @@ namespace PhotoMapApp.ViewModels
             if (tag != null && !tag.IsSelected) {
                 tag.IsSelected = true;
                 if (TagsSelectedList != EMPTY_FILTRE) {
-                    TagsSelectedList += ", ";
+                    TagsSelectedList += " | ";
                 } else {
                     TagsSelectedList = "";
                     IsClearFiltreVisible = true;

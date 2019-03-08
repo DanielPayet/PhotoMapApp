@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
@@ -13,22 +13,22 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <StackLayout Padding="30,20,30,0">
+    <StackLayout Padding="10,20">
         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" IsVisible="{Binding IsActionVisible}">
-            <StackLayout>
+            <StackLayout Margin="5, 5">
                 <Picker
                 ItemsSource="{Binding Tags}"
                 ItemDisplayBinding="{Binding Tag.Name}"
                 SelectedItem="{Binding SelectedTag}"
-                Title="Tags..."
-                FontSize="20"
-                WidthRequest="100"/>
+                Title="FILTRER PAR TAG..."
+                FontSize="16"
+                HorizontalOptions="FillAndExpand"/>
                 <StackLayout Orientation="Horizontal">
-                    <Button Text="Clear" IsVisible="{Binding IsClearFiltreVisible}" Command="{Binding ClearFilterCommand}"></Button>
-                    <Label Text="{Binding TagsSelectedList }"/>
+                    <Button VerticalOptions="Center" Text="Clear" IsVisible="{Binding IsClearFiltreVisible}" Command="{Binding ClearFilterCommand}"></Button>
+                    <Label Font="bold,14" TextColor="Black" VerticalOptions="Center" Text="{Binding TagsSelectedList }"/>
                 </StackLayout>
             </StackLayout>
-            <StackLayout Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="EndAndExpand" Margin="0, 10, 0, 0">
+            <StackLayout Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="EndAndExpand" Margin="5, 5">
                 <ImageButton Source="{Binding ASCButtonImageSource}" Command="{Binding ASCListCommand}" Style="{StaticResource iconButton}" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
                 <ImageButton Source="{Binding DESCButtonImageSource}" Command="{Binding DESCListCommand}" Style="{StaticResource iconButton}" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" Margin="10, 0, 0, 0" />
             </StackLayout>
@@ -36,12 +36,14 @@
         <StackLayout IsVisible="{Binding IsEmptyPost}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Label Text="Aucun enregistrement." HorizontalOptions="Center" VerticalOptions="Center" FontSize="40"></Label>
         </StackLayout>
+           
         <ListView
             ItemsSource="{Binding Posts}"
             HasUnevenRows="True"
             SeparatorVisibility="None"
             SelectionMode="None"
-            IsVisible="{Binding IsActionVisible}">
+            IsVisible="{Binding IsActionVisible}"
+            Margin="0, 20">
 
         <ListView.Behaviors>
             <b:EventToCommandBehavior EventName="ItemTapped" 
@@ -53,28 +55,30 @@
             <DataTemplate>
                 <ViewCell>
                     
-                    <StackLayout
-                            BackgroundColor="White"
-                            Orientation="Horizontal"
-                            VerticalOptions="FillAndExpand"
-                            Margin="10"
-                            Padding="10, 5">
+                    <Frame CornerRadius="5" HorizontalOptions="FillAndExpand" VerticalOptions="Start" HasShadow="false" 
+                           Margin="0, 10" Padding="10, 5">
+                        <StackLayout
+                                BackgroundColor="White"
+                                Orientation="Horizontal"
+                                VerticalOptions="FillAndExpand"
+                                >
 
-                        <Image Source="{Binding Image}" WidthRequest="80" HeightRequest="80">
-                        </Image>
-                        <StackLayout Padding="5">
+                            <Image Source="{Binding Image}" WidthRequest="80" HeightRequest="80" BackgroundColor="#EFEFEF">
+                            </Image>
+                            <StackLayout Padding="5">
+                                <Label
+                                    Text="{Binding Name}"/>
+                                <Label
+                                    Text="{Binding Tags, Converter={StaticResource TagsConverter}}"/>
+                            </StackLayout>
+                         
                             <Label
-                                Text="{Binding Name}"/>
-                            <Label
-                                Text="{Binding Tags, Converter={StaticResource TagsConverter}}"/>
+                                    Text="{Binding DateTime, Converter={StaticResource DateConverter}}"
+                                    VerticalOptions="Start"
+                                    HorizontalOptions="EndAndExpand"
+                                    HorizontalTextAlignment="End"/>
                         </StackLayout>
-                     
-                        <Label
-                                Text="{Binding DateTime, Converter={StaticResource DateConverter}}"
-                                VerticalOptions="Start"
-                                HorizontalOptions="EndAndExpand"
-                                HorizontalTextAlignment="End"/>
-                    </StackLayout>
+                     </Frame>
                 </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using LiteDB;
-using PhotoMapApp.Services.Definitions;
 using PhotoMapApp.Models;
 using System.Collections.Generic;
 
