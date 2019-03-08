@@ -29,8 +29,10 @@
                 </StackLayout>
             </StackLayout>
             <StackLayout Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="EndAndExpand" Margin="5, 5">
-                <ImageButton Source="{Binding ASCButtonImageSource}" Command="{Binding ASCListCommand}" Style="{StaticResource iconButton}" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
-                <ImageButton Source="{Binding DESCButtonImageSource}" Command="{Binding DESCListCommand}" Style="{StaticResource iconButton}" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" Margin="10, 0, 0, 0" />
+                <ImageButton IsVisible="{Binding IsListAscendant}" Source="{Binding ASCButtonImageSource}" Command="{Binding ASCListCommand}" Style="{StaticResource iconButton}" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
+                <ImageButton IsVisible="{Binding IsListDescendant}" Source="{Binding ASCGreyButtonImageSource}" Command="{Binding ASCListCommand}" Style="{StaticResource iconButton}" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" />
+                <ImageButton IsVisible="{Binding IsListDescendant}" Source="{Binding DESCButtonImageSource}" Command="{Binding DESCListCommand}" Style="{StaticResource iconButton}" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" Margin="10, 0, 0, 0" />
+                <ImageButton IsVisible="{Binding IsListAscendant}" Source="{Binding DESCGreyButtonImageSource}" Command="{Binding DESCListCommand}" Style="{StaticResource iconButton}" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" Margin="10, 0, 0, 0" />
             </StackLayout>
         </StackLayout>
         <StackLayout IsVisible="{Binding IsEmptyPost}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">

@@ -23,6 +23,8 @@
     <None Remove="Resources\Icons\delete.png" />
     <None Remove="Resources\Icons\edit.png" />
     <None Remove="Resources\Icons\save.png" />
+    <None Remove="Resources\Icons\greyArrowDown.png" />
+    <None Remove="Resources\Icons\greyArrowUp.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Icons\arrowDown.png" />
@@ -33,6 +35,8 @@
     <EmbeddedResource Include="Resources\Icons\delete.png" />
     <EmbeddedResource Include="Resources\Icons\edit.png" />
     <EmbeddedResource Include="Resources\Icons\save.png" />
+    <EmbeddedResource Include="Resources\Icons\greyArrowDown.png" />
+    <EmbeddedResource Include="Resources\Icons\greyArrowUp.png" />
   </ItemGroup>
 
   <ItemGroup>

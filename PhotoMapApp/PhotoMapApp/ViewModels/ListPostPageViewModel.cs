@@ -71,6 +71,15 @@ namespace PhotoMapApp.ViewModels
             }
             set { SetProperty(ref _isListAscendant, value); }
         }
+        public bool _isListDescendant = false;
+        public bool IsListDescendant
+        {
+            get
+            {
+                return _isListDescendant;
+            }
+            set { SetProperty(ref _isListDescendant, value); }
+        }
 
         public DelegateCommand<Post> OpenPostCommand { get; private set; } 
         public DelegateCommand ASCListCommand { get; private set; }
@@ -79,6 +88,8 @@ namespace PhotoMapApp.ViewModels
 
         public ImageSource ASCButtonImageSource { get; private set; }
         public ImageSource DESCButtonImageSource { get; private set; }
+        public ImageSource ASCGreyButtonImageSource { get; private set; }
+        public ImageSource DESCGreyButtonImageSource { get; private set; }
 
         private bool _isEmptyPost = true;
         public bool IsEmptyPost
@@ -94,18 +105,21 @@ namespace PhotoMapApp.ViewModels
             set { SetProperty(ref _isActionVisible, value); }
         }
 
-        public ListPostPageViewModel(INavigationService navigationService, IPostService postService, IImageService imageService, ITagService tagService): base (navigationService)
+        public ListPostPageViewModel(INavigationService navigationService, IPostService postService, IImageService imageService, ITagService tagService) : base(navigationService)
         {
             Title = "Enregistrements";
             _postService = postService;
             _imageService = imageService;
-            Tags = tagService.GetTags().ConvertAll((tag)=> new TagView(tag));
+            Tags = tagService.GetTags().ConvertAll((tag) => new TagView(tag));
             OpenPostCommand = new DelegateCommand<Post>(OpenPostDetail);
-            ASCListCommand = new DelegateCommand(OrderByASC, ()=> !IsListAscendant).ObservesProperty(() => IsListAscendant);
-            DESCListCommand = new DelegateCommand(OrderByDESC, () => IsListAscendant).ObservesProperty(() => IsListAscendant);
+            ASCListCommand = new DelegateCommand(OrderByASC);
+            DESCListCommand = new DelegateCommand(OrderByDESC);
             ClearFilterCommand = new DelegateCommand(ClearFilter);
             ASCButtonImageSource = _imageService.GetSource("Icons.arrowDown.png");
             DESCButtonImageSource = _imageService.GetSource("Icons.arrowUp.png");
+            ASCGreyButtonImageSource = _imageService.GetSource("Icons.greyArrowDown.png");
+            DESCGreyButtonImageSource = _imageService.GetSource("Icons.greyArrowUp.png");
+            IsListDescendant = false;
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
@@ -149,12 +163,14 @@ namespace PhotoMapApp.ViewModels
         private void OrderByASC()
         {
             IsListAscendant = true;
+            IsListDescendant = false;
             OrderedList();
         }
 
         private void OrderByDESC()
         {
             IsListAscendant = false;
+            IsListDescendant = true;
             OrderedList();
         }
 
