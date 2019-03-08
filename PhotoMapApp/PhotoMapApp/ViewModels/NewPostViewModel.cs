@@ -85,6 +85,7 @@ namespace PhotoMapApp.ViewModels
         public ImageSource SaveButtonImageSource { get; private set; }
         public ImageSource PictureImageSource { get; private set; }
 
+        private string ImagePath;
         private ImageSource _imagePost;
         public ImageSource ImagePost
         {
@@ -106,7 +107,7 @@ namespace PhotoMapApp.ViewModels
             SavePostCommand = new DelegateCommand(SavePost);
             OpenPhotoCommand = new DelegateCommand(openPhotoAsync, ()=> ImagePost == null).ObservesProperty(()=> ImagePost);
             this.SaveButtonImageSource = this._imageService.GetSource("Icons.arrowUp.png");
-
+            _dialogService = dialogService;
         }
 
         private void AddToSelectedTags(Tag value)
@@ -134,8 +135,8 @@ namespace PhotoMapApp.ViewModels
 
         private void SavePost()
         {
-            var post = new Post(Name, Description, SelectedTags, ImagePost, 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now);
-            _postService.AddPost(post);
+            var post = new Post(Name, Description, SelectedTags, ImagePath, 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now);
+            _postService.CreatePost(post);
             var navigationParam = new NavigationParameters {{ "post", post }};
             base.NavigationService.NavigateAsync("/MenuNavigation/NavigationPage/ListPostPage/PostPage", navigationParam);
         }
@@ -159,12 +160,8 @@ namespace PhotoMapApp.ViewModels
 
             if (file == null)
                 return;
-
-            ImagePost = ImageSource.FromStream(() =>
-            {
-                var stream = file.GetStream();
-                return stream;
-            });
+            ImagePath = file.Path;
+            ImagePost = ImageSource.FromFile(ImagePath);
         }
     }
 }

@@ -30,23 +30,22 @@ namespace PhotoMapApp.Services.Implementations
 
         public void UpdateOrSave(Post post)
         {
-            var collection = this._database.GetCollection<Post>("post");
-            if (!collection.Update(post))
-            {
+            var collection = _database.GetCollection<Post>("post");
+            if (!collection.Update(post)) {
                 collection.Insert(post);
             }
         }
 
         public void Delete(Post post)
         {
-            var collection = this._database.GetCollection<Post>("post");
+            var collection = _database.GetCollection<Post>("post");
             collection.Delete(post.Id);
         }
 
         public List<Tag> GetTags()
         {
             List<Tag> list = new List<Tag>();
-            var collection = this._database.GetCollection<Tag>("tag");
+            var collection = _database.GetCollection<Tag>("tag");
             var elements = collection.FindAll();
             foreach (Tag element in elements)
             {
@@ -57,7 +56,7 @@ namespace PhotoMapApp.Services.Implementations
 
         public void UpdateOrSave(Tag tag)
         {
-            var collection = this._database.GetCollection<Tag>("tag");
+            var collection = _database.GetCollection<Tag>("tag");
             if (!collection.Update(tag))
             {
                 collection.Insert(tag);
@@ -66,7 +65,7 @@ namespace PhotoMapApp.Services.Implementations
 
         public void Delete(Tag tag)
         {
-            var collection = this._database.GetCollection<Tag>("tag");
+            var collection = _database.GetCollection<Tag>("tag");
             collection.Delete(tag.Id);
         }
     }

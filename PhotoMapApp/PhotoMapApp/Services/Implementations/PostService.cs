@@ -9,17 +9,13 @@ namespace PhotoMapApp.Services.Implementations
 {
     public class PostService: IPostService
     {
+        private IDatabase _databaseService;
         private List<Post> _posts { get; set; }
 
-        public PostService(IImageService imageService)
+        public PostService(IDatabase database)
         {
-            this._posts = new List<Post> {
-                new Post("Post de test", "Ceci est une description", new List<Tag>{new Tag("THOMINOU"), new Tag("Drink") }, imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now),
-                new Post("Post de test", "Ceci est une description", new List<Tag>{new Tag("Drink"), new Tag("Food") }, imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now.AddDays(-1)),
-                new Post("Post de test", "Ceci est une description", new List<Tag>{new Tag("THOMINOU")}, imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now.AddDays(-8)),
-                new Post("Post de test", "Ceci est une description", new List<Tag>{new Tag("THOMINOU")}, imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now.AddDays(-35)),
-                new Post("Post de test", "Ceci est une description", new List<Tag>{new Tag("THOMINOU")}, imageService.GetSource("profil.png"), 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now.AddDays(-845))
-            };
+            _databaseService = database;
+            this._posts = _databaseService.GetPosts();
         }
 
         public List<Post> GetPosts()
@@ -32,13 +28,14 @@ namespace PhotoMapApp.Services.Implementations
             return this._posts[id];
         }
 
-        public void CreatePost(string name, string description, List<Tag> tags, ImageSource image, Double latitude, Double longitude, String address, DateTime dateTime)
+        public void CreatePost(string name, string description, List<Tag> tags, string image, Double latitude, Double longitude, String address, DateTime dateTime)
         {
-            this._posts.Add(new Post(name, description, tags, image, latitude, longitude, address, dateTime));
+            CreatePost(new Post(name, description, tags, image, latitude, longitude, address, dateTime));
         }
 
-        public void AddPost(Post post)
+        public void CreatePost(Post post)
         {
+            this._databaseService.UpdateOrSave(post);
             this._posts.Add(post);
         }
     }

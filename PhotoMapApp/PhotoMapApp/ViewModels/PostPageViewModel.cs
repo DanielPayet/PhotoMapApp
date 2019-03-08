@@ -42,7 +42,7 @@ namespace PhotoMapApp.ViewModels
         {
             this.Post = (Post)parameters["post"];
             this.Title = Post.Name;
-            this.BannerImageSource = Post.Image;
+            this.BannerImageSource = ImageSource.FromFile(Post.Image);
         }
 
         private async void DeletePostCommand()
