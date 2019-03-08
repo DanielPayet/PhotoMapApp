@@ -36,7 +36,12 @@ namespace PhotoMapApp.ViewModels
             
             foreach (Post post in _postService.GetPosts())
             {
-                Map.Pins.Add(new Pin() { Position = post.GetPosition(), Type = PinType.Generic, Label = post.Name });
+                Map.Pins.Add(new Pin() {
+                    Position = post.GetPosition(),
+                    Type = PinType.Generic,
+                    Label = post.Name + ": " + post.Description ,
+                    Address = post.Address
+                });
             }
 
             UpdateMapCenterAsync();
