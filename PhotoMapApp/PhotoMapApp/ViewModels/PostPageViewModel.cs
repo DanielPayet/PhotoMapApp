@@ -14,22 +14,30 @@ namespace PhotoMapApp.ViewModels
 {
     public class PostPageViewModel : ViewModelBase
     {
+        private IImageService _imageService;
+        private IPostService _postService;
+        private IPageDialogService _dialogService;
+
         private Post _post;
         public Post Post { get { return this._post; } set { SetProperty(ref this._post, value); }}
         public DelegateCommand DeletePostDelegate { get; private set; }
         public DelegateCommand<Post> EditPostDelegate { get; private set; }
-        private IImageService _imageService;
 
         private ImageSource _bannerImageSource;
         public ImageSource BannerImageSource { get { return _bannerImageSource; } set { SetProperty(ref _bannerImageSource, value); } }
         public ImageSource EditButtonImageSource { get; private set; }
         public ImageSource DeleteButtonImageSource { get; private set; }
 
-        private IPageDialogService _dialogService;
-        public PostPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IImageService imageService) : base(navigationService)
+        public PostPageViewModel(
+            INavigationService navigationService,
+            IPageDialogService dialogService, 
+            IImageService imageService,
+            IPostService postService
+            ) : base(navigationService)
         {
             this._imageService = imageService;
             this._dialogService = dialogService;
+            this._postService = postService;
             this.DeletePostDelegate = new DelegateCommand(DeletePostCommand);
             this.EditPostDelegate = new DelegateCommand<Post>(EditPostCommand);
 
@@ -50,15 +58,15 @@ namespace PhotoMapApp.ViewModels
             var answer = await _dialogService.DisplayAlertAsync("Suppression de post", "Voulez-vous vraiment supprimer ce post ?", "Supprimer", "Annuler");
             if (answer == true)
             {
-                // TODO : SUPPRIMER LE POST
-                await _dialogService.DisplayAlertAsync("Alert", "OUI", "ok");
+                _postService.Delete(Post);
+                await NavigationService.GoBackToRootAsync();
             }
         }
 
         private void EditPostCommand(Post post)
         {
             var navigationParam = new NavigationParameters { { "post", post } };
-            base.NavigationService.NavigateAsync("NewPost", navigationParam);
+            NavigationService.NavigateAsync("NewPost", navigationParam);
         }
     }
 }

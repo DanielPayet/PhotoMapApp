@@ -39,9 +39,10 @@ namespace PhotoMapApp.Services.Implementations
             _posts.Add(post);
         }
 
-        public void Update(Post post)
+        public void Delete(Post post)
         {
-            _databaseService.UpdateOrSave(post);
+            _databaseService.Delete(post);
+            _posts.Remove(post);
         }
     }
 }

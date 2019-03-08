@@ -18,7 +18,7 @@ namespace PhotoMapApp.Models
 
         public bool Equals(Tag tag)
         {
-            return Name.Equals(tag.Name);
+            return Id == tag.Id;
         }
     }
 }

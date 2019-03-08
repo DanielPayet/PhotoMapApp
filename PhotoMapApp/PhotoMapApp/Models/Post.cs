@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace PhotoMapApp.Models
 {
-    public class Post
+    public class Post: IEquatable<Post>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -35,6 +35,11 @@ namespace PhotoMapApp.Models
         public Position GetPosition()
         {
             return new Position(this.Latitude, this.Longitude);
+        }
+
+        public bool Equals(Post post)
+        {
+            return Id == post.Id;
         }
     }
 }

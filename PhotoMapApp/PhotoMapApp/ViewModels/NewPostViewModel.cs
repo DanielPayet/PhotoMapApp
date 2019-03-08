@@ -16,6 +16,7 @@ namespace PhotoMapApp.ViewModels
         private IImageService _imageService;
         private IMediaService _mediaService;
         private IGeolocationService _geolocationService;
+        private IDatabaseService _databaseService;
 
         private bool _isNewPostMode;
         public bool IsNewPostMode
@@ -103,19 +104,28 @@ namespace PhotoMapApp.ViewModels
         public DelegateCommand SavePostCommand { get; private set; }
         public DelegateCommand OpenPhotoCommand { get; private set; }
 
-        public NewPostViewModel(INavigationService navigationService, ITagService tagService, IPostService postService, IImageService imageService, IMediaService mediaService, IGeolocationService geolocationService) : base(navigationService)
+        public NewPostViewModel(
+            INavigationService navigationService,
+            ITagService tagService,
+            IPostService postService,
+            IImageService imageService,
+            IMediaService mediaService,
+            IGeolocationService geolocationService,
+            IDatabaseService databaseService
+            ) : base(navigationService)
         {
             Title = "Nouveau";
             _tagService = tagService;
             _postService = postService;
             _imageService = imageService;
+            _mediaService = mediaService;
+            _databaseService = databaseService;
             _geolocationService = geolocationService;
             Tags = new ObservableCollection<Tag>(_tagService.GetTags());
             ClearTagCommand = new DelegateCommand(ClearFilter);
             SavePostCommand = new DelegateCommand(SavePost);
-            OpenPhotoCommand = new DelegateCommand(getPhoto);
+            OpenPhotoCommand = new DelegateCommand(GetPhoto);
             SaveButtonImageSource = _imageService.GetSource("Icons.save.png");
-            _mediaService = mediaService;
             IsNewPostMode = true;
         }
 
@@ -163,23 +173,18 @@ namespace PhotoMapApp.ViewModels
                 var position = await _geolocationService.GetCurrentPosition();
                 post = new Post(Name, Description, SelectedTags, ImagePath, position.Latitude, position.Longitude, "Rue du gros prout de Daniel", DateTime.Now);
                 _postService.CreatePost(post);
-                post = postEdition;
-                post.Name = Name;
-                post.Description = Description;
-                post.Tags = SelectedTags;
-                _postService.Update(post);
             } else {
                 post = postEdition;
                 post.Name = Name;
                 post.Description = Description;
                 post.Tags = SelectedTags;
-                _postService.Update(post);
+                _databaseService.UpdateOrSave(post);
             }
             var navigationParam = new NavigationParameters { { "post", post } };
             await NavigationService.NavigateAsync("/MenuNavigation/NavigationPage/ListPostPage/PostPage", navigationParam);
         }
 
-        private async void getPhoto()
+        private async void GetPhoto()
         {
             var imagePath = await  _mediaService.getImage();
             if(imagePath != null) {

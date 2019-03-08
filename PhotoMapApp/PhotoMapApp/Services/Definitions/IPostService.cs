@@ -12,6 +12,6 @@ namespace PhotoMapApp.Services.Definitions
         Post GetPost(int id);
         void CreatePost(string name, string description, List<Tag> tag, string image, Double latitude, Double longitude, String address, DateTime dateTime);
         void CreatePost(Post post);
-        void Update(Post post);
+        void Delete(Post post);
     }
 }

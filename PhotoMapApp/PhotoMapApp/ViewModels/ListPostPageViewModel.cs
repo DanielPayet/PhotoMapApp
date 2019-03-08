@@ -84,15 +84,15 @@ namespace PhotoMapApp.ViewModels
         public ListPostPageViewModel(INavigationService navigationService, IPostService postService, IImageService imageService, ITagService tagService): base (navigationService)
         {
             Title = "Enregistrements";
-            this._postService = postService;
-            this._imageService = imageService;
-            this.Tags = tagService.GetTags().ConvertAll((tag)=> new TagView(tag));
+            _postService = postService;
+            _imageService = imageService;
+            Tags = tagService.GetTags().ConvertAll((tag)=> new TagView(tag));
             OpenPostCommand = new DelegateCommand<Post>(OpenPostDetail);
-            ASCListCommand = new DelegateCommand(orderByASC, ()=> !IsListAscendant).ObservesProperty(() => IsListAscendant);
-            DESCListCommand = new DelegateCommand(orderByDESC, () => IsListAscendant).ObservesProperty(() => IsListAscendant);
+            ASCListCommand = new DelegateCommand(OrderByASC, ()=> !IsListAscendant).ObservesProperty(() => IsListAscendant);
+            DESCListCommand = new DelegateCommand(OrderByDESC, () => IsListAscendant).ObservesProperty(() => IsListAscendant);
             ClearFilterCommand = new DelegateCommand(ClearFilter);
-            this.ASCButtonImageSource = this._imageService.GetSource("Icons.arrowDown.png");
-            this.DESCButtonImageSource = this._imageService.GetSource("Icons.arrowUp.png");
+            ASCButtonImageSource = _imageService.GetSource("Icons.arrowDown.png");
+            DESCButtonImageSource = _imageService.GetSource("Icons.arrowUp.png");
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
@@ -109,9 +109,8 @@ namespace PhotoMapApp.ViewModels
 
         private void OpenPostDetail(Post post)
         {
-            var navigationParam = new NavigationParameters();
-            navigationParam.Add("post", post);
-            base.NavigationService.NavigateAsync("PostPage", navigationParam);
+            var navigationParam = new NavigationParameters { { "post", post } };
+            NavigationService.NavigateAsync("PostPage", navigationParam);
         }
 
         private void OrderedList(List<Post> posts)
@@ -132,13 +131,13 @@ namespace PhotoMapApp.ViewModels
             }
         }
 
-        private void orderByASC()
+        private void OrderByASC()
         {
             IsListAscendant = true;
             OrderedList();
         }
 
-        private void orderByDESC()
+        private void OrderByDESC()
         {
             IsListAscendant = false;
             OrderedList();
