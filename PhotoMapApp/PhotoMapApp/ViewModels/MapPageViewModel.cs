@@ -11,49 +11,47 @@ using System.Collections.ObjectModel;
 using PhotoMapApp.Services.Definitions;
 using PhotoMapApp.Models;
 using Plugin.Geolocator;
+using Xamarin.Forms;
+using Android;
+using Android.App;
+using static Android.Manifest;
 
 namespace PhotoMapApp.ViewModels
 {
     public class MapPageViewModel : ViewModelBase
     {
         private IPostService _postService;
+        private IGeolocationService _geolocationService;
         public Map Map { get; private set; }
-        private Pin _currentPositionPin;
         private ObservableCollection<Pin> _pinCollection = new ObservableCollection<Pin>();
         public ObservableCollection<Pin> PinCollection { get { return _pinCollection; } set { _pinCollection = value; OnPropertyChanged(); } }
 
-        public MapPageViewModel(INavigationService navigationService, IPostService postService) : base(navigationService)
+        public MapPageViewModel(INavigationService navigationService, IPostService postService, IGeolocationService geolocationService) : base(navigationService)
         {
-            this._postService = postService;
-            this.Map = new Map();
-            this._currentPositionPin = new Pin();
+            _postService = postService;
+            _geolocationService = geolocationService;
 
-            foreach (Post post in this._postService.GetPosts())
+            Map = new Map(
+                MapSpan.FromCenterAndRadius(
+                new Position(37, -122), Distance.FromMiles(0.3)))
             {
-                this.Map.Pins.Add(new Pin() { Position = post.GetPosition(), Type = PinType.Generic, Label = post.Name });
+                IsShowingUser = true,
+                VerticalOptions = LayoutOptions.FillAndExpand
+            };
+            
+            foreach (Post post in _postService.GetPosts())
+            {
+                Map.Pins.Add(new Pin() { Position = post.GetPosition(), Type = PinType.Generic, Label = post.Name });
             }
             System.Diagnostics.Debug.WriteLine("TEST");
 
-            Plugin.Geolocator.CrossGeolocator.Current.PositionChanged += (sender, e) =>
-            {
-                System.Diagnostics.Debug.WriteLine("TEST2");
-                UpdateCurrentPositionAsync();
-            };
-
-            UpdateCurrentPositionAsync();
+            UpdateMapCenterAsync();
         }
 
-        public async void UpdateCurrentPositionAsync() 
-        { 
-            var geolocatorPosition = await Plugin.Geolocator.CrossGeolocator.Current.GetPositionAsync();
-            this._currentPositionPin.Position = new Position(geolocatorPosition.Latitude, geolocatorPosition.Longitude);
-
-            if (!this.Map.Pins.Contains(this._currentPositionPin))
-            {
-                this.Map.Pins.Add(this._currentPositionPin);
-            }
+        public async void UpdateMapCenterAsync() 
+        {
+            var position = await _geolocationService.GetCurrentPositionAsync();
+            this.Map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromMiles(1)));
         }
-
-
     }
 }

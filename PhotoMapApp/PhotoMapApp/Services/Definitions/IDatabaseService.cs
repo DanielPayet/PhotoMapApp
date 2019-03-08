@@ -4,7 +4,7 @@ using PhotoMapApp.Models;
 
 namespace PhotoMapApp
 {
-    public interface IDatabase
+    public interface IDatabaseService
     {
         List<Post> GetPosts();
         void UpdateOrSave(Post post);

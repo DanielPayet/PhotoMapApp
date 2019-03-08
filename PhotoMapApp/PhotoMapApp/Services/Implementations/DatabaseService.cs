@@ -7,10 +7,10 @@ using System.Collections.Generic;
 
 namespace PhotoMapApp.Services.Implementations
 {
-    public class Database : IDatabase
+    public class DatabaseService : IDatabaseService
     {
         private readonly LiteDatabase _database;
-        public Database() {
+        public DatabaseService() {
             var path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             var dataBasePath = Path.Combine(path, "database.db");
             this._database = new LiteDatabase(dataBasePath);
