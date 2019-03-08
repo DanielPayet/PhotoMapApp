@@ -10,16 +10,16 @@ namespace PhotoMapApp.Services.Implementations
     {
         private List<Tag> _tags { get; set; }
 
-        public TagService(IDatabase database)
+        public TagService(IDatabaseService databaseService)
         {
-            this._tags = database.GetTags();
+            this._tags = databaseService.GetTags();
             if(_tags.Count == 0) {
                 this._tags = new List<Tag> {
                     new Tag("Drink"),
                     new Tag("Food"),
                     new Tag("ToSee")
                 };
-                this._tags.ForEach(tag => database.UpdateOrSave(tag));
+                this._tags.ForEach(tag => databaseService.UpdateOrSave(tag));
             }
         }
 

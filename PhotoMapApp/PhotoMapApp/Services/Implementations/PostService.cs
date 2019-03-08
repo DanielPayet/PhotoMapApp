@@ -9,12 +9,12 @@ namespace PhotoMapApp.Services.Implementations
 {
     public class PostService: IPostService
     {
-        private IDatabase _databaseService;
+        private IDatabaseService _databaseService;
         private List<Post> _posts { get; set; }
 
-        public PostService(IDatabase database)
+        public PostService(IDatabaseService databaseService)
         {
-            _databaseService = database;
+            _databaseService = databaseService;
             this._posts = _databaseService.GetPosts();
         }
 

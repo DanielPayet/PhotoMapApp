@@ -12,9 +12,6 @@ using PhotoMapApp.Services.Definitions;
 using PhotoMapApp.Models;
 using Plugin.Geolocator;
 using Xamarin.Forms;
-using Android;
-using Android.App;
-using static Android.Manifest;
 
 namespace PhotoMapApp.ViewModels
 {
