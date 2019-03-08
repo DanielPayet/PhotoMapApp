@@ -17,7 +17,7 @@ namespace PhotoMapApp.ViewModels
         private Post _post;
         public Post Post { get { return this._post; } set { SetProperty(ref this._post, value); }}
         public DelegateCommand DeletePostDelegate { get; private set; }
-        public DelegateCommand EditPostDelegate { get; private set; }
+        public DelegateCommand<Post> EditPostDelegate { get; private set; }
         private IImageService _imageService;
 
         private ImageSource _bannerImageSource;
@@ -31,7 +31,7 @@ namespace PhotoMapApp.ViewModels
             this._imageService = imageService;
             this._dialogService = dialogService;
             this.DeletePostDelegate = new DelegateCommand(DeletePostCommand);
-            this.EditPostDelegate = new DelegateCommand(EditPostCommand);
+            this.EditPostDelegate = new DelegateCommand<Post>(EditPostCommand);
 
             // Resources
             this.EditButtonImageSource = this._imageService.GetSource("Icons.edit.png");
@@ -55,9 +55,10 @@ namespace PhotoMapApp.ViewModels
             }
         }
 
-        private void EditPostCommand()
+        private void EditPostCommand(Post post)
         {
-           // TODO : Ouvrir page de modif
+            var navigationParam = new NavigationParameters { { "post", post } };
+            base.NavigationService.NavigateAsync("NewPost", navigationParam);
         }
     }
 }

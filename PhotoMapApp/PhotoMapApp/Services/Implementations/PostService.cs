@@ -15,17 +15,17 @@ namespace PhotoMapApp.Services.Implementations
         public PostService(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
-            this._posts = _databaseService.GetPosts();
+            _posts = _databaseService.GetPosts();
         }
 
         public List<Post> GetPosts()
         {
-            return this._posts;
+            return _posts;
         }
 
         public Post GetPost(int id)
         {
-            return this._posts[id];
+            return _posts[id];
         }
 
         public void CreatePost(string name, string description, List<Tag> tags, string image, Double latitude, Double longitude, String address, DateTime dateTime)
@@ -35,8 +35,13 @@ namespace PhotoMapApp.Services.Implementations
 
         public void CreatePost(Post post)
         {
-            this._databaseService.UpdateOrSave(post);
-            this._posts.Add(post);
+            _databaseService.UpdateOrSave(post);
+            _posts.Add(post);
+        }
+
+        public void Update(Post post)
+        {
+            _databaseService.UpdateOrSave(post);
         }
     }
 }

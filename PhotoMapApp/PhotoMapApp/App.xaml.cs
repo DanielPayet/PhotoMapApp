@@ -49,7 +49,7 @@ namespace PhotoMapApp
             containerRegistry.RegisterSingleton<IImageService, ImageService>();
             containerRegistry.RegisterSingleton<IDatabaseService, DatabaseService>();
             containerRegistry.RegisterSingleton<IGeolocationService, GeolocationService>();
-
+            containerRegistry.RegisterSingleton<IMediaService, MediaService>();
         }
     }
 }

@@ -19,7 +19,10 @@ namespace PhotoMapApp.ViewModels
         private ITagService _tagService;
         private IPostService _postService;
         private IImageService _imageService;
-        private IPageDialogService _dialogService;
+        private IMediaService _mediaService;
+
+        private bool IsEditMode { get; set; }
+        private Post postEdition { get; set; }
 
         private string _name;
         public string Name
@@ -85,7 +88,7 @@ namespace PhotoMapApp.ViewModels
         public ImageSource SaveButtonImageSource { get; private set; }
         public ImageSource PictureImageSource { get; private set; }
 
-        private string ImagePath;
+        private string ImagePath { get; set; }
         private ImageSource _imagePost;
         public ImageSource ImagePost
         {
@@ -97,7 +100,7 @@ namespace PhotoMapApp.ViewModels
         public DelegateCommand SavePostCommand { get; private set; }
         public DelegateCommand OpenPhotoCommand { get; private set; }
 
-        public NewPostViewModel(INavigationService navigationService, ITagService tagService, IPostService postService, IImageService imageService, IPageDialogService dialogService) : base(navigationService)
+        public NewPostViewModel(INavigationService navigationService, ITagService tagService, IPostService postService, IImageService imageService, IMediaService mediaService) : base(navigationService)
         {
             Title = "Nouveau";
             _tagService = tagService;
@@ -105,9 +108,24 @@ namespace PhotoMapApp.ViewModels
             _imageService = imageService;
             Tags = new ObservableCollection<Tag>(_tagService.GetTags());
             SavePostCommand = new DelegateCommand(SavePost);
-            OpenPhotoCommand = new DelegateCommand(openPhotoAsync, ()=> ImagePost == null).ObservesProperty(()=> ImagePost);
-            this.SaveButtonImageSource = this._imageService.GetSource("Icons.arrowUp.png");
-            _dialogService = dialogService;
+            OpenPhotoCommand = new DelegateCommand(getPhoto);
+            SaveButtonImageSource = _imageService.GetSource("Icons.arrowUp.png");
+            _mediaService = mediaService;
+            IsEditMode = false;
+        }
+
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            Post post = (Post) parameters["post"];
+            if (post != null) {
+                ImagePath = post.Image;
+                ImagePost = ImageSource.FromFile(ImagePath);
+                Name = post.Name;
+                Description = post.Description;
+                post.Tags.ForEach(tag => AddToSelectedTags(tag));
+                IsEditMode = true;
+                postEdition = post;
+            }
         }
 
         private void AddToSelectedTags(Tag value)
@@ -135,33 +153,28 @@ namespace PhotoMapApp.ViewModels
 
         private void SavePost()
         {
-            var post = new Post(Name, Description, SelectedTags, ImagePath, 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now);
-            _postService.CreatePost(post);
-            var navigationParam = new NavigationParameters {{ "post", post }};
-            base.NavigationService.NavigateAsync("/MenuNavigation/NavigationPage/ListPostPage/PostPage", navigationParam);
+            Post post;
+            if (IsEditMode) {
+                post = postEdition;
+                post.Name = Name;
+                post.Description = Description;
+                post.Tags = SelectedTags;
+                _postService.Update(post);
+            } else {
+                post = new Post(Name, Description, SelectedTags, ImagePath, 1.2948848, 43.39494, "Rue du gros prout de Daniel", DateTime.Now);
+                _postService.CreatePost(post);
+            }
+            var navigationParam = new NavigationParameters { { "post", post } };
+            NavigationService.NavigateAsync("/MenuNavigation/NavigationPage/ListPostPage/PostPage", navigationParam);
         }
 
-        private async void openPhotoAsync()
+        private async void getPhoto()
         {
-            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported) {
-                await _dialogService.DisplayAlertAsync("Aucun appareil photo", "Aucun appareil photo n'est disponible", "OK");
-                return;
+            var imagePath = await  _mediaService.getImage();
+            if(imagePath != null) {
+                ImagePath = imagePath;
+                ImagePost = ImageSource.FromFile(imagePath);
             }
-
-            var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions {
-                Directory = "Pictures",
-                SaveToAlbum = true,
-                CompressionQuality = 50,
-                CustomPhotoSize = 50,
-                PhotoSize = PhotoSize.MaxWidthHeight,
-                MaxWidthHeight = 2000,
-                DefaultCamera = CameraDevice.Rear
-            });
-
-            if (file == null)
-                return;
-            ImagePath = file.Path;
-            ImagePost = ImageSource.FromFile(ImagePath);
         }
     }
 }
