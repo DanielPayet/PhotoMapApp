@@ -12,8 +12,7 @@
     </ContentPage.Resources>
     <ScrollView>
         <StackLayout>
-            <Image Source="{Binding BannerImageSource}">
-            </Image>
+            <Image Source="{Binding BannerImageSource}"/>
             <StackLayout Padding="10, 10, 10, 10">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                     <Label Text="{Binding Post.Name}" Style="" HorizontalOptions="StartAndExpand" FontSize="Large" FontAttributes="Bold" TextColor="Black" />

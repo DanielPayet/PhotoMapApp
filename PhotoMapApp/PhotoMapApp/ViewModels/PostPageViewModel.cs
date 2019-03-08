@@ -68,5 +68,5 @@ namespace PhotoMapApp.ViewModels
             var navigationParam = new NavigationParameters { { "post", post } };
             NavigationService.NavigateAsync("NewPost", navigationParam);
         }
-    }
+   }
 }
